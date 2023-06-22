@@ -10,3 +10,11 @@ window.onload = function() {
         window.location.href = 'login.html';
     });
 };
+
+// 서비스 배너 로드 함수
+function loadServiceBanner() {
+    // 서비스 배너 로드 로직 작성
+    // 예를 들어, AJAX 요청을 통해 서버에서 배너 데이터를 가져와서 화면에 표시하는 등의 처리
+    // 아래는 예시로 배너를 콘솔에 출력하는 코드입니다.
+    console.log('Service Banner Loaded');
+}
