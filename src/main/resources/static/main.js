@@ -5,9 +5,10 @@ window.onload = function() {
     // 서비스 배너 로드 등 초기화 작업 수행
     loadServiceBanner();
     // 로그인 버튼 클릭 이벤트 설정
-    document.getElementById('loginBtn').addEventListener('click', function() {
+    const loginButton = document.querySelector('.login-button');
+    loginButton.addEventListener('click', function() {
         // 로그인 페이지로 이동
-        window.location.href = 'login.html';
+        window.location.href = 'page2.html';
     });
 };
 
