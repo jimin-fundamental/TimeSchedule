@@ -1,9 +1,11 @@
 package TimeScheduler.project.repository;
 
 import TimeScheduler.project.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class MemoryMemberRepository implements MemberRepository{
     private static Map<Long, Member> store = new HashMap<>(); //key = id, value = Member
     private static long sequence = 0L; //0,1,2.. 자동으로 key값을 생성해주는 애

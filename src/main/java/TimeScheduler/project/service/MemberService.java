@@ -3,10 +3,12 @@ package TimeScheduler.project.service;
 import TimeScheduler.project.domain.Member;
 import TimeScheduler.project.repository.MemberRepository;
 import TimeScheduler.project.repository.MemoryMemberRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.List;
 
+@Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
