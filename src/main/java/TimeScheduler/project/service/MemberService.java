@@ -8,7 +8,11 @@ import java.util.Optional;
 import java.util.List;
 
 public class MemberService {
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {//외부에서 저장소 넣어주도록
+        this.memberRepository = memberRepository;
+    }
 
     //회원가입
     public Long join(Member member){
@@ -43,4 +47,4 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 }
-}
+
