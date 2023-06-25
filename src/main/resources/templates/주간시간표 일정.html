@@ -41,7 +41,7 @@
     width:200px;
     height:38px;
     position:absolute;
-    left:248px;
+    left:245px;
     top:149px;
     font-family:Pretendard;
     text-align:left;
@@ -49,39 +49,32 @@
     letter-spacing:0;
     font-weight: bolder;
 }
-.e1_11 { 
-    background-color:rgba(35.2641711384058, 35.2641711384058, 35.2641711384058, 1);
-    width:17.409912109375px;
-    height:28.194190979003906px;
-    position:absolute;
-    left:446px;
-    top:45px;
+
+.vector {
+  position: absolute;
+  left: 446px;
+  top: 45px;
+  overflow: visible;
 }
-.e1_12 { 
-    background-color:rgba(115.11157035827637, 115.11157035827637, 115.11157035827637, 1);
-    width:15px;
-    height:25px;
-    position:absolute;
-    left:402px;
-    top:156px;
+.vector2 {
+  position: absolute;
+  left: 402px;
+  top: 156px;
+  overflow: visible;
 }
-.e1_13 { 
-    transform: rotate(180deg);
-    background-color:rgba(35.2641711384058, 35.2641711384058, 35.2641711384058, 1);
-    width:17.409912109375px;
-    height:28.194190979003906px;
-    position:absolute;
-    left:415.41015625px;
-    top:45px;
+.vector3 {
+  position: absolute;
+  left: 415.41px;
+  top: 45px;
+  transform: translate(-17.41px, 0px);
+  overflow: visible;
 }
-.e1_14 { 
-    transform: rotate(180deg);
-    background-color:rgba(115.11157035827637, 115.11157035827637, 115.11157035827637, 1);
-    width:15px;
-    height:25px;
-    position:absolute;
-    left:220px;
-    top:156px;
+.vector4 {
+  position: absolute;
+  left: 220px;
+  top: 156px;
+  transform: translate(-15px, 0px);
+  overflow: visible;
 }
 .e1_15 { 
     color:rgba(0, 0, 0, 1);
@@ -703,10 +696,62 @@
 <body>
     <div class=e1_7>
   <div class="e1_8"></div><span  class="e1_9">2023년 5월</span><span  class="e1_10">5월 첫째주</span>
-  <div class="e1_11"></div>
-  <div class="e1_12"></div>
-  <div class="e1_13"></div>
-  <div class="e1_14"></div><span  class="e1_15">월간</span><span  class="e1_16">주간</span><span  class="e1_17">일간</span>
+ <svg
+    class="vector"
+    width="18"
+    height="29"
+    viewBox="0 0 18 29"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3.31282 0L0 3.31282L10.7608 14.0971L0 24.8814L3.31282 28.1942L17.4099 14.0971L3.31282 0Z"
+      fill="#232323"
+    />
+  </svg>
+
+  <svg
+    class="vector2"
+    width="15"
+    height="25"
+    viewBox="0 0 15 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M2.85425 0L0 2.9375L9.27125 12.5L0 22.0625L2.85425 25L15 12.5L2.85425 0Z"
+      fill="#737373"
+    />
+  </svg>
+
+  <svg
+    class="vector3"
+    width="18"
+    height="29"
+    viewBox="0 0 18 29"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M14.0973 0L17.4102 3.31282L6.64937 14.0971L17.4102 24.8814L14.0973 28.1942L0.000244141 14.0971L14.0973 0Z"
+      fill="#232323"
+    />
+  </svg>
+
+  <svg
+    class="vector4"
+    width="15"
+    height="25"
+    viewBox="0 0 15 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12.1457 0L15 2.9375L5.72875 12.5L15 22.0625L12.1457 25L0 12.5L12.1457 0Z"
+      fill="#737373"
+    />
+  </svg>
+</div><span  class="e1_15">월간</span><span  class="e1_16">주간</span><span  class="e1_17">일간</span>
   <div class="e1_18"></div>
   <div class="e1_19"></div>
   <div class="e1_20"></div>
