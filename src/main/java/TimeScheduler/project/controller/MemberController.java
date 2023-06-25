@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Calendar;
+import java.util.Optional;
+
 @Controller
 public class MemberController {
     private final MemberService memberService;
@@ -20,8 +23,26 @@ public class MemberController {
     public String createForm() {
         return "login";
     }
-    
-    //로그인하기 구현
+
+    @PostMapping(value = "/login")
+    public String login(LoginForm form) {
+        String email = form.getEmail();
+        String password = form.getPw();
+
+        Optional<Member> optionalMember = memberService.login(email, password);
+
+        if (optionalMember.isPresent()) {
+            // Login successful
+            // Redirect to the appropriate page (e.g., "Calendar")
+            return "Calendar";
+        } else {
+            // Login failed
+            // Redirect to the login page with an error message
+            return "redirect:/login?error";
+        }
+    }
+
+
 
     @GetMapping(value="/signup")
     public String signup() {
@@ -31,15 +52,14 @@ public class MemberController {
     public String create(MemberForm form){
         Member member = new Member();
         member.setEmail(form.getEmail());
+        member.setPw(form.getPw());
         memberService.join(member);
-        return "Calendar";
-
+        return "login";
     }
 
     @GetMapping(value = "/Calendar")
     public String SelectDate(){
         return "Calendar";
-
     }
 
 

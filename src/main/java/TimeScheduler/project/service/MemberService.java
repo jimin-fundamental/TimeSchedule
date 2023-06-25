@@ -50,5 +50,11 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
+    public Optional<Member> login(String email, String password) {
+        return memberRepository.findByEmail(email)
+                .filter(member -> member.getPw().equals(password));
+    }
+
+
 }
 
