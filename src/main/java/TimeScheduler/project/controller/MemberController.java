@@ -20,8 +20,14 @@ public class MemberController {
     public String createForm() {
         return "login";
     }
+    
+    //로그인하기 구현
 
-    @PostMapping(value = "/login")
+    @GetMapping(value="/signup")
+    public String signup() {
+        return "signup";
+    }
+    @PostMapping(value = "/signup")
     public String create(MemberForm form){
         Member member = new Member();
         member.setEmail(form.getEmail());
