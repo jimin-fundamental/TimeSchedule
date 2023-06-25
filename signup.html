@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.4.1.js"></script>
+</head>
+<body>
+    <section class="login-form">
+        <h1>회원가입</h1>
+        <form action="">
+            <div class="int-area">
+                <input type=“email” name=“email” id=“email” required>
+                <label for="email">이메일</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="pw" id="pw" autocomplete="off" required>
+                <label for="pw">비밀번호</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="confirm_pw" id="confirm_pw" autocomplete="off" required>
+                <label for="confirm_pw">비밀번호 확인</label>
+            </div>
+            <div class="btn-area">
+                <button type="submit">가입하기</button>
+            </div>
+        </form>
+        <div class="caption">
+            이미 계정이 있으신가요? <a href="#">로그인</a>
+        </div>
+    </section>
+
+    <script>
+        $(document).ready(function() {
+            let id = $('#id');
+            let pw = $('#pw');
+            let confirmPw = $('#confirm_pw');
+            let btn = $('button[type="submit"]');
+
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                if ($(id).val() === "") {
+                    $(id).next('label').addClass('warning');
+                    setTimeout(function() {
+                        $('label').removeClass('warning');
+                    }, 1500);
+                } else if ($(pw).val() === "") {
+                    $(pw).next('label').addClass('warning');
+                    setTimeout(function() {
+                        $('label').removeClass('warning');
+                    }, 1500);
+                } else if ($(confirmPw).val() === "") {
+                    $(confirmPw).next('label').addClass('warning');
+                    setTimeout(function() {
+                        $('label').removeClass('warning');
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
