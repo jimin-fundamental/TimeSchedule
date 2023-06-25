@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');*/
 
-* {margin: 0; padding: 0; box-sizing: border-box;}
+{margin: 0; padding: 0; box-sizing: border-box;}
 body{
     font-family: 'Noto Sans KR', sans-serif;
     display: flex;
@@ -19,12 +19,11 @@ body::before{
     font-size: 32px; color: #000000;
     text-align: center;
     margin-bottom: 60px;
-}
 .int-area {
     width: 400px; position: relative;
     margin-top: 20px;
 }
-.int-area: first-chile {margin-top: 0;}
+.int-area:first-chile {margin-top: 0;}
 .int-area input {
     width: 100%;
     padding: 20px 10px 10px;
@@ -35,16 +34,19 @@ body::before{
     outline: none;
 }
 .int-area label {
-    position: absolute; left: 10px; top:15px;
-    font-size: 18px; color: #323232;
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    font-size: 18px;
+    color: #323232;
     transition: top .5s ease;
 }
-.int-area label.warning{
+.int-area label.warning {
     color: red :!important;
-    animation: warning .3s ease; 
+    animation: warning .3s ease;
     animation-iteration-count: 3;
 }
-@keyframes warning{
+@keyframes warning {
     0% {transform: translateX(-8px);}
     25% {transform: translateX(8px);}
     50% {transform: translateX(-8px);}
@@ -53,8 +55,10 @@ body::before{
 .int-area input:focus + label,
 .int-area input:valid + label {
     top: -2px;
-    font-size: 13px; color: #166cea;
+    font-size: 13px;
+    color: #166cea;
 }
+
 
 .btn-area{margin-top: 30px;}
 .btn-area button {
@@ -63,7 +67,7 @@ body::before{
     color: #2a2a2a;
     font-size: 20px;
     border-radius: 0;
-    border-color: transparent; 
+    border-color: transparent;
     cursor: pointer;
 }
 
