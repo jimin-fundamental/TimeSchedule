@@ -1,63 +1,144 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="jquery-3.4.1.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .signup-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 32px;
+            color: #000;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .int-area {
+            width: 400px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .int-area input {
+            width: 100%;
+            padding: 20px 10px 10px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #323232;
+            font-size: 18px;
+            color: #000000;
+            outline: none;
+        }
+
+        .int-area label {
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            font-size: 18px;
+            color: #323232;
+            transition: top 0.5s ease;
+        }
+
+        .int-area label.warning {
+            color: red !important;
+            animation: warning .3s ease;
+            animation-iteration-count: 3;
+        }
+
+        @keyframes warning {
+            0% {
+                transform: translateX(-8px);
+            }
+            25% {
+                transform: translateX(8px);
+            }
+            50% {
+                transform: translateX(-8px);
+            }
+            75% {
+                transform: translateX(8px);
+            }
+        }
+
+        .int-area input:focus + label,
+        .int-area input:valid + label {
+            top: -2px;
+            font-size: 13px;
+            color: #166cea;
+        }
+
+        .btn-area {
+            margin-top: 30px;
+        }
+
+        .btn-area button {
+            width: 100%;
+            height: 50px;
+            background: #c3c3c3;
+            color: #2a2a2a;
+            font-size: 20px;
+            border-radius: 0;
+            border-color: transparent;
+            cursor: pointer;
+        }
+
+        .caption {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .caption a {
+            font-size: 15px;
+            color: #999;
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <section class="login-form">
-        <h1>회원가입</h1>
-        <form action="">
-            <div class="int-area">
-                <input type=“email” name=“email” id=“email” required>
-                <label for="email">이메일</label>
-            </div>
-            <div class="int-area">
-                <input type="password" name="pw" id="pw" autocomplete="off" required>
-                <label for="pw">비밀번호</label>
-            </div>
-            <div class="int-area">
-                <input type="password" name="confirm_pw" id="confirm_pw" autocomplete="off" required>
-                <label for="confirm_pw">비밀번호 확인</label>
-            </div>
-            <div class="btn-area">
-                <button type="submit">가입하기</button>
-            </div>
-        </form>
-        <div class="caption">
-            이미 계정이 있으신가요? <a href="#">로그인</a>
+<section class="signup-form">
+    <h1>회원가입</h1>
+    <form action="">
+        <div class="int-area">
+            <input type="email" name="email" id="email" required>
+            <label for="email">이메일</label>
         </div>
-    </section>
-
-    <script>
-        $(document).ready(function() {
-            let id = $('#id');
-            let pw = $('#pw');
-            let confirmPw = $('#confirm_pw');
-            let btn = $('button[type="submit"]');
-
-            $(btn).on('click', function(event) {
-                event.preventDefault();
-                if ($(id).val() === "") {
-                    $(id).next('label').addClass('warning');
-                    setTimeout(function() {
-                        $('label').removeClass('warning');
-                    }, 1500);
-                } else if ($(pw).val() === "") {
-                    $(pw).next('label').addClass('warning');
-                    setTimeout(function() {
-                        $('label').removeClass('warning');
-                    }, 1500);
-                } else if ($(confirmPw).val() === "") {
-                    $(confirmPw).next('label').addClass('warning');
-                    setTimeout(function() {
-                        $('label').removeClass('warning');
-                    }, 1500);
-                }
-            });
-        });
-    </script>
+        <div class="int-area">
+            <input type="password" name="pw" id="pw" required>
+            <label for="pw">비밀번호</label>
+        </div>
+        <div class="int-area">
+            <input type="password" name="confirm_pw" id="confirm_pw" required>
+            <label for="confirm_pw">비밀번호 확인</label>
+        </div>
+        <div class="btn-area">
+            <button type="submit">가입하기</button>
+        </div>
+    </form>
+    <div class="caption">
+        이미 계정이 있으신가요? <a href="#">로그인</a>
+    </div>
+</section>
 </body>
+
 </html>
