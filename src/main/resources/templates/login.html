@@ -102,9 +102,9 @@
             text-align: center;
         }
         .caption a {
-            font-size: 25px;
+            font-size: 20px;
             color: #999;
-            text-decoration: none;
+            text-decoration: underline;
         }
     </style>
 
@@ -112,19 +112,23 @@
 <body>
 <section class="login-form">
     <h1>로그인</h1>
-    <form action="">
+    <form action="/login" method="post" th:object="${loginForm}">
+        <<div class="int-area">
+        <input type="text" th:field="${loginForm.email}" autocomplete="off" required>
+        <label>Email</label>
+    </div>
         <div class="int-area">
-            <input type="text" name="id" id="id" autocomplete="off" required>
-            <label for="id">EMAIL</label>
+            <input type="password" th:field="${loginForm.password}" autocomplete="off" required>
+            <label>Password</label>
         </div>
-        <div class="int-area">
-            <input type="password" name="pw" id="pw" autocomplete="off" required>
-            <label for="pw">PASSWORD</label>
-        </div>
+
         <div class="btn-area">
             <button type="submit">LOGIN</button>
         </div>
     </form>
+    <div class="caption">
+        <a href="signup">3초 회원가입</a>
+    </div>
 </section>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

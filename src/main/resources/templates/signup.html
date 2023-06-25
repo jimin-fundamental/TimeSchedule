@@ -15,8 +15,9 @@
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            display: flex;
+            display: flex; /* 추가 */
             justify-content: center;
+            align-items: center; /* 추가 */
             height: 100vh;
             background-color: #DFE7EA;
         }
@@ -127,7 +128,7 @@
 <body>
 <section class="signup-form">
     <h1>회원가입</h1>
-    <form action="">
+    <form action="/signup" method="post">
         <div class="int-area">
             <input type="email" name="email" id="email" required>
             <label for="email">이메일</label>
@@ -145,7 +146,7 @@
         </div>
     </form>
     <div class="caption">
-        이미 계정이 있으신가요? <a href="#">로그인</a>
+        이미 계정이 있으신가요? <a href="/login">로그인</a>
     </div>
 </section>
 </body>
