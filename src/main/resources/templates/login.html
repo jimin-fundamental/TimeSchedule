@@ -113,15 +113,14 @@
 <section class="login-form">
     <h1>로그인</h1>
     <form action="/login" method="post" th:object="${loginForm}">
-        <<div class="int-area">
-        <input type="text" th:field="${loginForm.email}" autocomplete="off" required>
-        <label>Email</label>
-    </div>
         <div class="int-area">
-            <input type="password" th:field="${loginForm.password}" autocomplete="off" required>
+            <input type="text" th:field="*{email}" autocomplete="off" required>
+            <label>Email</label>
+        </div>
+        <div class="int-area">
+            <input type="password" th:field="*{pw}" autocomplete="off" required>
             <label>Password</label>
         </div>
-
         <div class="btn-area">
             <button type="submit">LOGIN</button>
         </div>

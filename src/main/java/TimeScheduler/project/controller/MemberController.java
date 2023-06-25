@@ -4,6 +4,7 @@ import TimeScheduler.project.domain.Member;
 import TimeScheduler.project.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,12 +20,13 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping(value="/login")
-    public String createForm() {
+    @GetMapping(value = "/login")
+    public String createForm(Model model) {
+        model.addAttribute("loginForm", new LoginForm());
         return "login";
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping("/login")
     public String login(LoginForm form) {
         String email = form.getEmail();
         String password = form.getPw();
@@ -34,15 +36,13 @@ public class MemberController {
         if (optionalMember.isPresent()) {
             // Login successful
             // Redirect to the appropriate page (e.g., "Calendar")
-            return "Calendar";
+            return "redirect:/Calendar";
         } else {
             // Login failed
-            // Redirect to the login page with an error message
+            // Redirect to the login page
             return "redirect:/login?error";
         }
     }
-
-
 
     @GetMapping(value="/signup")
     public String signup() {
@@ -54,7 +54,7 @@ public class MemberController {
         member.setEmail(form.getEmail());
         member.setPw(form.getPw());
         memberService.join(member);
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping(value = "/Calendar")
