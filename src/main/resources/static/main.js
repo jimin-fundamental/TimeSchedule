@@ -8,7 +8,7 @@ window.onload = function() {
     const loginButton = document.querySelector('.login-button');
     loginButton.addEventListener('click', function() {
         // 로그인 페이지로 이동
-        window.location.href = 'page2.html';
+        window.location.href = 'login.html';
     });
 };
 

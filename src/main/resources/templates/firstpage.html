@@ -1,22 +1,63 @@
-  <!DOCTYPE html>
-  <html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIME TETRIS</title>
-    <link rel="stylesheet" href="firstpage.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIME TETRIS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <body>
-    <div class="container">
-      <h1 class="title">TIME<BR>TETRIS</h1>
-      <img src="logo.png" alt="Logo" class="logo">
-      <div class="description">
-        <p>하루 맞춤 시간 관리 앱 최강자</p>
-        <p>AI 맞춤 시간표로 하루를 계획하고 관리하세요.</p>
-      </div>
-    </div>
-  </body>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #DFE7EA;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-  </html>
+    .container {
+      text-align: center;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 43px;
+      margin-bottom: 50px;
+    }
+
+    .logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 50px;
+    }
+
+    .description {
+      margin-bottom: 40px;
+    }
+
+    .description p {
+      font-size: 20px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1 class="title">TIME<br>TETRIS</h1>
+  <img src="/logo.png" alt="Logo" class="logo">
+  <div class="description">
+    <p>하루 맞춤 시간 관리 앱 최강자</p>
+    <p>AI 맞춤 시간표로 하루를 계획하고 관리하세요.</p>
+  </div>
+</div>
+</body>
+
+</html>
