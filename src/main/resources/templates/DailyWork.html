@@ -2715,9 +2715,49 @@
       </div>
     </div>
   </div>
+    <textarea id="scheduleInput" rows="4" cols="50" style="resize: none; margin: 10px;" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, time: 8:00am - 9:30am"></textarea>
 </div>
-<script type="text/javascript">
- 
-</script>
+    <script>
+      function addSchedule() {
+        var inputText = document.getElementById("scheduleInput").value;
+        var scheduleList = document.getElementById("scheduleList");
+        var listItem = document.createElement("li");
+
+        // 파싱 및 변수 저장
+        var schedule = parseSchedule(inputText);
+        var date = schedule.date;
+        var name = schedule.name;
+        var duration = schedule.duration;
+        var fixed = schedule.fixed;
+        var time = schedule.time;
+
+        listItem.textContent = `Date: ${date}, Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Time: ${time}`;
+        scheduleList.appendChild(listItem);
+      }
+
+      function parseSchedule(inputText) {
+        var schedule = {};
+        var regex = /([^:,]+):\s*([^,]+)/g;
+        var matches;
+
+        while ((matches = regex.exec(inputText)) !== null) {
+          var key = matches[1].trim().toLowerCase();
+          var value = matches[2].trim();
+
+          if (key === "date")
+            schedule.date = value;
+          else if (key === "name")
+            schedule.name = value;
+          else if (key === "duration")
+            schedule.duration = parseInt(value);
+          else if (key === "fixed")
+            schedule.fixed = (value.toLowerCase() === "true");
+          else if (key === "time")
+            schedule.time = value;
+        }
+
+        return schedule;
+      }
+    </script>
 </body>
 </html>

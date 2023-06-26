@@ -22,7 +22,7 @@ public class MemberController {
 
     @GetMapping(value = "/login")
     public String createForm(Model model) {
-        model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("loginForm", new LoginForm()); //이거 없으면 login 페이지 안 떠
         return "login";
     }
 
