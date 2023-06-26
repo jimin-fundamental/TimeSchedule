@@ -27,6 +27,22 @@ public class Schedule {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
 
 
