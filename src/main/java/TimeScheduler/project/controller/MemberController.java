@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -26,20 +27,20 @@ public class MemberController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(LoginForm form) {
-        String email = form.getEmail();
-        String password = form.getPw();
+    @PostMapping(value = "/login")
+    public String login(MemberForm form) {
+        Member member = new Member();
+        member.setEmail(form.getEmail());
+        member.setPw(form.getPw());
 
-        Optional<Member> optionalMember = memberService.login(email, password);
-
-        if (optionalMember.isPresent()) {
-            // Login successful
-            // Redirect to the appropriate page (e.g., "Calendar")
-            return "redirect:/Calendar";
+        Optional<Member> loggedInMember = memberService.login(member);
+        if (loggedInMember.isPresent()) {
+            // 로그인 성공
+            // 적절한 처리를 수행하고, 로그인된 회원 정보를 활용합니다.
+            return "Calendar";
         } else {
-            // Login failed
-            // Redirect to the login page
+            // 로그인 실패
+            // 적절한 실패 처리를 수행합니다.
             return "redirect:/login?error";
         }
     }

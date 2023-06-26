@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,9 +59,38 @@ public class ScheduleController {
 
     @PostMapping("/daily")
     public String MakeSchedule(@ModelAttribute("task") Task task) throws IOException {
-        Schedule schedule = new Schedule();
-//        schedule.setTasks(task.);
-//        calendarService.createSchedule(schedule);
-        return "redirect:/daily"; // Redirect to the "daily" page
-}
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(task);
+
+        List<Schedule> schedules = (List<Schedule>) calendarService.createSchedule(tasks);
+
+        for (Schedule schedule : schedules) {
+            // Set any necessary properties of the schedule
+            schedule.setDate(task.getDate()); // Set the date based on the received task
+
+            // You can set other properties of the schedule if needed
+            // schedule.setXXX(task.getXXX());
+
+            // Perform any additional operations on the schedule as required
+            // ...
+
+            // Save or process the schedule
+            // ...
+
+            // If you want to save the schedule to a database, you can use a service method
+            // Example: scheduleService.saveSchedule(schedule);
+
+            // If you want to process the schedule further, you can perform additional logic here
+            // ...
+
+            // Add the schedule to the list of schedules
+            // schedules.add(schedule);
+        }
+
+        // Redirect to the "DailyWork" page after processing the schedules
+        return "redirect:/DailyWork";
+    }
+
+
+
 }

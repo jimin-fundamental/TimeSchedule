@@ -112,35 +112,38 @@
 <body>
 <section class="login-form">
     <h1>로그인</h1>
-    <form action="/login" method="post" th:object="${loginForm}">
+    <form action="/login" method="post">
         <div class="int-area">
-            <input type="text" th:field="*{email}" autocomplete="off" required>
-            <label>Email</label>
+            <input type="text" name="email" id="email" required>
+            <label for="email">이메일</label>
         </div>
         <div class="int-area">
-            <input type="password" th:field="*{pw}" autocomplete="off" required>
-            <label>Password</label>
+            <input type="password" name="pw" id="pw" required>
+            <label for="pw">비밀번호</label>
         </div>
         <div class="btn-area">
-            <button type="submit">LOGIN</button>
+            <button type="submit">로그인</button>
         </div>
     </form>
     <div class="caption">
-        <a href="signup">3초 회원가입</a>
+        계정이 없으신가요? <a href="/signup">회원가입</a>
     </div>
 </section>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     $(document).ready(function() {
-        let id = $('#id');
+        let email = $('#email');
         let pw = $('#pw');
         let btn = $('button[type="submit"]');
 
         $(btn).on('click', function(event) {
             event.preventDefault();
-            if ($(id).val() === "") {
-                $(id).next('label').addClass('warning');
+            if ($(email).val() === "" || $(pw).val() === "") {
+                return; // 이메일이나 비밀번호가 비어 있을 경우 폼 제출을 막음
+            }
+            if ($(email).val() === "") {
+                $(email).next('label').addClass('warning');
                 setTimeout(function() {
                     $('label').removeClass('warning');
                 }, 1500);
@@ -151,7 +154,9 @@
                 }, 1500);
             }
         });
+
     });
 </script>
+
 </body>
 </html>

@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*; //기본으로 들어가 있음
 //junit 명령어만 기본으로 사용 가능
 
@@ -69,6 +72,26 @@ class MemberServiceTest {
         assertEquals(e.getMessage(), "이미 존재하는 회원입니다.");
         //Then
     }
+
+//    @Test
+//    public void 로그인() {
+//        // Given
+//        Member member = new Member();
+//        member.setEmail("jimin@ewhian.net");
+//        member.setPw("password"); // 비밀번호 설정
+//
+//        // 회원 가입
+//        memberService.join(member);
+//
+//        // When
+//        Optional<Member> loggedInMember = memberService.login("jimin@ewhian.net", "password");
+//
+//        // Then
+//        assertThat(loggedInMember.isPresent()).isTrue(); // 로그인된 멤버가 존재하는지 검증
+//        assertThat(loggedInMember.get().getEmail()).isEqualTo(member.getEmail()); // 로그인된 멤버의 이메일이 예상과 일치하는지 검증
+//    }
+
+
 
 
 }
