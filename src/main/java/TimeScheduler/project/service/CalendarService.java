@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CalendarService {
@@ -45,12 +46,15 @@ public class CalendarService {
         }
 
         // Use OpenAPI to fetch updated daily schedule
-        List<Task> updatedFlexibleTasks = openAi.fetchUpdatedSchedule(flexibleTasks);
+        openAi.fetchUpdatedSchedule(flexibleTasks);
+        List<Task> updatedFlexibleTasks = new ArrayList<>(flexibleTasks);
 
         // Generate schedule for flexible tasks
         if (!updatedFlexibleTasks.isEmpty()) {
             LocalTime startTime = LocalTime.of(7, 0); // Start time for the schedule
             LocalTime endTime = LocalTime.of(22, 0); // End time for the schedule
+
+            updatedFlexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
             List<Task> scheduledTasks = schedule.getTasks();
             for (Task task : updatedFlexibleTasks) {

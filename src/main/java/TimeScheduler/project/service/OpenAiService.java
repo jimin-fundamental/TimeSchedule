@@ -23,7 +23,7 @@ public class OpenAiService {
         this.client = new OkHttpClient();
     }
 
-    public List<Task> fetchUpdatedSchedule(List<Task> flexibleTasks) throws IOException {
+    public void fetchUpdatedSchedule(List<Task> flexibleTasks) throws IOException {
         JSONArray tasksArray = new JSONArray();
         for (Task task : flexibleTasks) {
             JSONObject taskObject = new JSONObject();
@@ -75,6 +75,5 @@ public class OpenAiService {
             e.printStackTrace();
         }
 
-        return flexibleTasks;
     }
 }

@@ -25,6 +25,22 @@ public class MemberService {
         return member.getId();
     }
 
+    public Optional<Member> login(Member member) {
+        // 이메일과 비밀번호를 통해 회원을 조회합니다.
+        Optional<Member> optionalMember = memberRepository.findByEmail(member.getEmail());
+
+        // 조회된 회원이 존재하고, 비밀번호가 일치하는 경우에만 로그인 성공으로 간주합니다.
+        if (optionalMember.isPresent()) {
+            Member foundMember = optionalMember.get();
+            if (foundMember.getPw().equals(member.getPw())) {
+                return Optional.of(foundMember); // 로그인 성공
+            }
+        }
+
+        return Optional.empty(); // 로그인 실패
+    }
+
+
     private void validateDuplicateMember(Member member) {
         memberRepository.findByEmail(member.getEmail())
                 .ifPresent(m -> { //optional로 null 감쌌기 때문에 이렇게 처리 가능
@@ -50,10 +66,7 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
-    public Optional<Member> login(String email, String password) {
-        return memberRepository.findByEmail(email)
-                .filter(member -> member.getPw().equals(password));
-    }
+
 
 
 }
