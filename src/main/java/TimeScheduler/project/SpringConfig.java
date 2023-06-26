@@ -1,8 +1,9 @@
 package TimeScheduler.project;
 
-import TimeScheduler.project.repository.JpaMemberRepository;
 import TimeScheduler.project.repository.MemberRepository;
+import TimeScheduler.project.service.CalendarService;
 import TimeScheduler.project.service.MemberService;
+import TimeScheduler.project.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +12,25 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
 
     private final MemberRepository memberRepository;
+    private final OpenAiService openAiService;
 
     @Autowired
-    public SpringConfig(MemberRepository memberRepository) {
+    public SpringConfig(MemberRepository memberRepository, OpenAiService openAiService) {
         this.memberRepository = memberRepository;
+        this.openAiService = openAiService;
     }
 
     @Bean
-    public MemberService memberService(){
+    public MemberService memberService() {
         return new MemberService(memberRepository);
     }
 
-//    @Bean
-//    public MemberRepository memberRepository(){
-//        return new JpaMemberRepository();
-//    }
+    @Bean
+    public CalendarService calendarService() {
+        return new CalendarService(openAiService);
+    }
+    @Bean
+    public OpenAiService openAiService() {
+        return new OpenAiService();
+    }
 }
