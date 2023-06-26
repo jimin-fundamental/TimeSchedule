@@ -1,12 +1,13 @@
 package TimeScheduler.project.service;
 
-import TimeScheduler.project.controller.Task;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.transaction.annotation.Transactional;
+import TimeScheduler.project.controller.Task;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Transactional
@@ -28,8 +29,11 @@ public class OpenAiService {
             JSONObject taskObject = new JSONObject();
             taskObject.put("name", task.getName());
             taskObject.put("duration", task.getDuration());
+            taskObject.put("priority", task.getPriority());
             tasksArray.put(taskObject);
         }
+
+        flexibleTasks.sort(Comparator.comparingInt(Task::getPriority));
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("tasks", tasksArray);
@@ -53,9 +57,9 @@ public class OpenAiService {
                     JSONObject updatedTaskObject = updatedTasksArray.getJSONObject(i);
                     String taskId = updatedTaskObject.getString("id");
                     int duration = updatedTaskObject.getInt("duration");
+                    int priority = updatedTaskObject.getInt("priority");
                     String time = updatedTaskObject.getString("time");
 
-                    // Find the task in the original task list and update its details
                     for (Task task : flexibleTasks) {
                         if (task.getId().equals(taskId)) {
                             task.setDuration(duration);
@@ -65,15 +69,12 @@ public class OpenAiService {
                     }
                 }
             } else {
-                // Handle error response
                 System.out.println("Failed to fetch updated schedule. Error: " + response.code());
             }
         } catch (IOException e) {
-            // Handle exception
             e.printStackTrace();
         }
 
         return flexibleTasks;
     }
-
 }
