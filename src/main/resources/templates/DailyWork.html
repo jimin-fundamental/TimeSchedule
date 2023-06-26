@@ -6,7 +6,49 @@
     <title>AI가일정짜줌</title>
     
     <style>
-       .1_9 { 
+      .schedule-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+        position: fixed; /* Change to "fixed" to keep the container within the visible area */
+        top: 0; /* Adjust the top position if necessary */
+        left: 0; /* Adjust the left position if necessary */
+        transform: scale(2);
+        transform-origin: top left;
+        z-index: 999; /* Add a high z-index value to ensure the container appears above other elements */
+      }
+
+      .schedule-container textarea {
+        resize: none;
+        margin: 20px;
+        width: 400px;
+        height: 100px;
+      }
+
+      .schedule-container button {
+        padding: 10px 20px;
+        background-color: #0376C0;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+
+      .schedule-container ul {
+        margin-top: 20px;
+        list-style-type: none;
+      }
+
+      .schedule-container ul li {
+        margin-bottom: 5px;
+      }
+
+
+
+      .1_9 {
   overflow:hidden;
 }
 .e1_9 { 
@@ -2715,8 +2757,13 @@
       </div>
     </div>
   </div>
-    <textarea id="scheduleInput" rows="4" cols="50" style="resize: none; margin: 10px;" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, time: 8:00am - 9:30am"></textarea>
 </div>
+    <div class="schedule-container">
+      <button onclick="addSchedule()">스케줄 추가</button>
+      <textarea id="scheduleInput" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, time: 8:00am - 9:30am"></textarea>
+      <ul id="scheduleList"></ul>
+    </div>
+
     <script>
       function addSchedule() {
         var inputText = document.getElementById("scheduleInput").value;
