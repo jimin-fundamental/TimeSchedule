@@ -12,12 +12,10 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
 
     private final MemberRepository memberRepository;
-    private final OpenAiService openAiService;
 
     @Autowired
-    public SpringConfig(MemberRepository memberRepository, OpenAiService openAiService) {
+    public SpringConfig(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.openAiService = openAiService;
     }
 
     @Bean
@@ -27,8 +25,9 @@ public class SpringConfig {
 
     @Bean
     public CalendarService calendarService() {
-        return new CalendarService(openAiService);
+        return new CalendarService(openAiService());
     }
+
     @Bean
     public OpenAiService openAiService() {
         return new OpenAiService();
