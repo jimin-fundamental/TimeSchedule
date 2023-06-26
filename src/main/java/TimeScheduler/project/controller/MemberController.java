@@ -57,10 +57,7 @@ public class MemberController {
         return "redirect:/login";
     }
 
-    @GetMapping(value = "/Calendar")
-    public String SelectDate(){
-        return "Calendar";
-    }
+
 
 
 }
