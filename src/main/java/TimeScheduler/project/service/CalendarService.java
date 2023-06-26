@@ -18,7 +18,7 @@ public class CalendarService {
     }
 
     @Transactional
-    public Schedule createSchedule(List<Task> tasks, String openAPIKey) throws IOException {
+    public Schedule createSchedule(List<Task> tasks) throws IOException {
         Schedule schedule = new Schedule();
 
         // Filter tasks by fixed property

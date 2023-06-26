@@ -2760,7 +2760,7 @@
 </div>
     <div class="schedule-container">
       <button onclick="addSchedule()">스케줄 추가</button>
-      <textarea id="scheduleInput" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, time: 8:00am - 9:30am"></textarea>
+      <textarea id="scheduleInput" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, prioity: 1, time: 8:00am - 9:30am"></textarea>
       <ul id="scheduleList"></ul>
     </div>
 
@@ -2776,9 +2776,10 @@
         var name = schedule.name;
         var duration = schedule.duration;
         var fixed = schedule.fixed;
+        var priority = schedule.fixed;
         var time = schedule.time;
 
-        listItem.textContent = `Date: ${date}, Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Time: ${time}`;
+        listItem.textContent = `Date: ${date}, Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Priority: ${priority}, Time: ${time}`;
         scheduleList.appendChild(listItem);
       }
 
@@ -2799,6 +2800,8 @@
             schedule.duration = parseInt(value);
           else if (key === "fixed")
             schedule.fixed = (value.toLowerCase() === "true");
+          else if (key === "priority")
+            schedule.priority = parseInt(value);
           else if (key === "time")
             schedule.time = value;
         }

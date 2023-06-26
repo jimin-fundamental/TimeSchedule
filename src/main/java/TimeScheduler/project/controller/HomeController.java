@@ -3,14 +3,13 @@ package TimeScheduler.project.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class HomeController {
-    @GetMapping("/Calendar")
-    public String home(){
-        return "Calendar";
-    }
-
-
-
-
-}
+//@Controller
+//public class HomeController {
+//    @GetMapping("/Calendar")
+//    public String home(){
+//        return "Calendar";
+//    }
+//
+//
+//
+//}
