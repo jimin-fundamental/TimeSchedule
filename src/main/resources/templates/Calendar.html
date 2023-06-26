@@ -11,13 +11,13 @@
     .1_5 {
         overflow:hidden;
       }
-    .e1_5 {
+    .파란배경 {
       background-color:rgba(223.00000190734863, 231.00000143051147, 234.00000125169754, 1);
       width:1920px;
       height:1080px;
       position:absolute;
     }
-    .e1_6 {
+    .흰색배경 {
       background-color:rgba(255, 255, 255, 1);
       width:135px;
       height:1080px;
@@ -25,7 +25,7 @@
       left:0px;
       top:0px;
     }
-    .e1_7 {
+    ._5월캘린더텍스트 {
       color:rgba(35.2641711384058, 35.2641711384058, 35.2641711384058, 1);
       width:200px;
       height:38px;
@@ -1475,18 +1475,29 @@
 
 
   </style>
+  |
+
   <script th:inline="javascript">
-    function handleButtonClick() {
-      window.location.href = "/fixed";
+    function handleButtonClick() { //날짜박스 버튼 누를 시 다음 페이지로 넘어감
+      window.location.href = "file:///C:/Users/hjera/Desktop/%EA%B3%A0%EC%A0%95%EC%8A%A4%EC%BC%80%EC%A4%84%EC%9E%85%EB%A0%A5.html";
 
     }
+
   </script>
 
 
 </head>
 <body>
-<div class="e1_5">
-  <div class="e1_6"></div><span class="e1_7">2023년 5월</span>
+
+<!--전체틀입니다-->
+<div class="전체틀">
+  <div class="파란배경">
+  <div class="흰색배경"></div>
+  <span class="_5월캘린더텍스트">2023년 5월</span>
+
+
+<!--e1_9 ~e1_113 까지 Calender의 날짜 박스와 날짜 텍스트 입니다-->
+<div class="날짜박스+날짜텍스트"> 
   <div class="e1_9" onclick="handleButtonClick()">
     <div class="e1_10" onclick="handleButtonClick()"></div><span class="e1_11">31</span>
   </div>
@@ -1592,33 +1603,38 @@
   <div class="e1_111">
     <div class="e1_112" onclick="handleButtonClick()"></div><span class="e1_113">3</span>
   </div>
+
+
+<!--5월 캘린더 텍스트 옆 화살표입니다-->
   <svg
-          class="vector"
-          width="18"
-          height="29"
-          viewBox="0 0 18 29"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      class="vector"
+      width="18"
+      height="29"
+      viewBox="0 0 18 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
   >
     <path
-            d="M3.31282 0L0 3.31282L10.7608 14.0971L0 24.8814L3.31282 28.1942L17.4099 14.0971L3.31282 0Z"
-            fill="#232323"
+      d="M3.31282 0L0 3.31282L10.7608 14.0971L0 24.8814L3.31282 28.1942L17.4099 14.0971L3.31282 0Z"
+      fill="#232323"
+    />
+  </svg>
+   <svg
+      class="vector2"
+      width="18"
+      height="29"
+      viewBox="0 0 18 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M14.0971 0L17.4099 3.31282L6.64913 14.0971L17.4099 24.8814L14.0971 28.1942L-4.61652e-07 14.0971L14.0971 0Z"
+      fill="#232323"
     />
   </svg>
 
-  <svg
-          class="vector2"
-          width="18"
-          height="29"
-          viewBox="0 0 18 29"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-            d="M14.0971 0L17.4099 3.31282L6.64913 14.0971L17.4099 24.8814L14.0971 28.1942L-4.61652e-07 14.0971L14.0971 0Z"
-            fill="#232323"
-    />
-  </svg>
+
+<!--월간, 주간, 일간 텍스트 입니다-->
 </div><span class="e1_116">월간</span><span class="e1_117">주간</span><span class="e1_118">일간</span>
 
 </div>
