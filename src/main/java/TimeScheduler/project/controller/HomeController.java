@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-    @GetMapping("/")
+    @GetMapping("/Calendar")
     public String home(){
-        return "firstpage";
+        return "Calendar";
     }
 
 
