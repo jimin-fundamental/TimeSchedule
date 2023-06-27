@@ -2790,20 +2790,21 @@
         var listItem = document.createElement("li");
 
         // 파싱 및 변수 저장
-        var schedule = parseSchedule(inputText);
+        var schedule = parseTasks(inputText)[0];
         var name = schedule.name;
         var duration = schedule.duration;
         var fixed = schedule.fixed;
         var priority = schedule.priority;
-        var time = schedule.time;
+        var startTime = formatTime(schedule.startTime);
+        var endTime = formatTime(schedule.endTime);
 
-        listItem.textContent = `Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Priority: ${priority}, Time: ${time}`;
+        listItem.textContent = `name: ${name}, duration: ${duration}, fixed: ${fixed}, priority: ${priority}, time: ${startTime} - ${endTime}`;
         scheduleList.appendChild(listItem);
       }
 
       function parseTasks(inputText) {
-        // Assuming inputText is a string containing multiple tasks, separated by a comma and a space
-        var tasks = inputText.split('", "');
+        // Assuming inputText is a string containing multiple tasks, separated by a line break
+        var tasks = inputText.split('\n');
         return tasks.map(taskText => {
           var task = {};
           var regex = /([^:,]+):\s*([^,]+)/g;
@@ -2820,7 +2821,7 @@
             else if (key === "fixed")
               task.fixed = (value.toLowerCase() === "true");
             else if (key === "priority")
-              task.priority = parseInt(value);
+              task.priority = value !== "null" ? parseInt(value) : null;
             else if (key === "time") {
               var times = value.split(' - ');
               task.startTime = times[0];
@@ -2832,7 +2833,6 @@
         });
       }
 
-
       function submitSchedule() {
         var scheduleInput = document.getElementById("scheduleInput").value;
         var xhr = new XMLHttpRequest();
@@ -2840,13 +2840,25 @@
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("Schedule submitted successfully");
+          if (xhr.readyState === 4) {
+            if(xhr.status === 200) {
+              window.location.href = "/DailyWork"; // redirects to the DailyWork page
+            } else {
+              // handle error
+              console.log("Error, status code: " + xhr.status);
+            }
           }
         };
 
         var data = JSON.stringify({tasks: parseTasks(scheduleInput)});
+        console.log(data); //data 확인용
         xhr.send(data);
+      }
+      function formatTime(time) {
+        var parts = time.split(':');
+        var hour = parseInt(parts[0]);
+        var minute = parseInt(parts[1]);
+        return new Date().setHours(hour, minute);
       }
 
     </script>

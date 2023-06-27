@@ -3,12 +3,10 @@ package TimeScheduler.project.controller;
 import TimeScheduler.project.domain.Schedule;
 import TimeScheduler.project.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,34 +53,28 @@ public class ScheduleController {
         return "FixedSchedule";
     }
 
-    @GetMapping(value = "/daily")
+    @GetMapping(value = "/DailyWork")
     public String showDailyWork() {
         return "DailyWork";
     }
 
-//    @PostMapping("/daily")
-//    public String makeSchedule(@ModelAttribute("task") Task task) throws IOException {
-//        List<Task> tasks = new ArrayList<>();
-//        tasks.add(task);
-//
-//        Schedule schedule = new Schedule();
+//    @PostMapping("/DailyWork")
+//    public String makeSchedule(@RequestBody Schedule schedule) throws IOException {
 //
 //        // Process the schedule & save
-//        schedule = calendarService.createSchedule(tasks);
+//        calendarService.createSchedule(schedule.getTasks());
 //
 //        // Redirect to the "DailyWork" page after processing the schedules
 //        return "redirect:/DailyWork";
 //    }
 
-    @PostMapping("/daily")
-    public String makeSchedule(@RequestBody Schedule schedule) throws IOException {
+    @PostMapping(value = "/daily", consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> makeSchedule(@RequestBody Schedule schedule) throws IOException {
         // Process the schedule & save
-        schedule = calendarService.createSchedule(schedule.getTasks());
-
-        // Redirect to the "DailyWork" page after processing the schedules
-        return "redirect:/DailyWork";
+        calendarService.createSchedule(schedule.getTasks());
+        return ResponseEntity.ok().build(); // return a 200 OK status
     }
-
 
 
 }
