@@ -49,7 +49,7 @@ public class ScheduleController {
     }
 
 
-    @PostMapping(value = "/daily", consumes = "application/json")
+    @PostMapping(value = "/DailyWork", consumes = "application/json")
     @ResponseBody
     public ResponseEntity<String> makeSchedule(@RequestBody Schedule schedule) throws IOException {
         // Process the schedule & save

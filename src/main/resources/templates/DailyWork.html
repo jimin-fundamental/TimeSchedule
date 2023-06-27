@@ -6,9 +6,8 @@
     <title>AI가일정짜줌</title>
     
     <style>
-      .assigned {
-        background-color: #ffa500; /* Or any color you prefer */
-      }
+
+
 
       .schedule-container {
         display: flex;
@@ -605,11 +604,20 @@
 .2_1362 { 
   overflow:hidden;
 }
-.시간블록들 { 
-  width:625px;
-  height:818px;
-  position:absolute;
-}
+      .timeBlock {
+        background-color: #ffffff;
+        width:96px;
+        height:47px;
+        position:absolute;
+        left:0px;
+        top:0px;
+        /*border: 1px solid #000; // Add this to visually see the box if it is empty*/
+      }
+
+      .assigned {
+        background-color: #ffa500; /* orange background */
+      }
+
 .e2_1363 { 
   width:607.9309692382812px;
   height:47.094825744628906px;
@@ -2545,140 +2553,130 @@
   <div class=e1_260>
 
 
-
-
-
 <!--e2_1363 부터 e2_1469 까지 10분단위 흰색 블록들 입니다-->
-  <div class="시간블록들">
-  <div class=e2_1363> <!--7시-->
-    <div class="e2_1364" id="7:00"></div>
-    <div class="e2_1365" id="7:10"></div>
-    <div class="e2_1366" id="7:20"></div>
-    <div class="e2_1367" id="7:30"></div>
-    <div class="e2_1368" id="7:40"></div>
-    <div class="e2_1369" id="7:50"></div>
-  </div>
-  <div class=e2_1370> <!--8시-->
-    <div class="e2_1371" id="8:00"></div>
-    <div class="e2_1372" id="8:10"></div>
-    <div class="e2_1373" id="8:20"></div>
-    <div class="e2_1374" id="8:30"></div>
-    <div class="e2_1375" id="8:40"></div>
-    <div class="e2_1376" id="8:50"></div>
-  </div>
-  <div class=e2_1377> <!--9시-->
-    <div class="e2_1378" id="9:00"></div>
-    <div class="e2_1379" id="9:10"></div>
-    <div class="e2_1380" id="9:20"></div>
-    <div class="e2_1381" id="9:30"></div>
-    <div class="e2_1382" id="9:40"></div>
-    <div class="e2_1383" id="9:50"></div>
-  </div>
-  <div class=e2_1385> <!--10시-->
-    <div class="e2_1386" id="10:00"></div>
-    <div class="e2_1387" id="10:10"></div>
-    <div class="e2_1388" id="10:20"></div>
-    <div class="e2_1389" id="10:30"></div>
-    <div class="e2_1390" id="10:40"></div>
-    <div class="e2_1391" id="10:50"></div>
-  </div>
-  <div class=e2_1393> <!--11시-->
-    <div class="e2_1394" id="11:00"></div>
-    <div class="e2_1395" id="11:10"></div>
-    <div class="e2_1396" id="11:20"></div>
-    <div class="e2_1397" id="11:30"></div>
-    <div class="e2_1398" id="11:40"></div>
-    <div class="e2_1399" id="11:50"></div>
-  </div>
-  <div class=e2_1400> <!--12시-->
-    <div class="e2_1401" id="12:00"></div>
-    <div class="e2_1402" id="12:10"></div>
-    <div class="e2_1403" id="12:20"></div>
-    <div class="e2_1404" id="12:30"></div>
-    <div class="e2_1405" id="12:40"></div>
-    <div class="e2_1406" id="12:50"></div>
-  </div>
-  <div class=e2_1407> <!--13시-->
-    <div class="e2_1408" id="13:00"></div>
-    <div class="e2_1409" id="13:10"></div>
-    <div class="e2_1410" id="13:20"></div>
-    <div class="e2_1411" id="13:30"></div>
-    <div class="e2_1412" id="13:40"></div>
-    <div class="e2_1413" id="13:50"></div>
-  </div>
-  <div class=e2_1414> <!--14시-->
-    <div class="e2_1415" id="14:00"></div>
-    <div class="e2_1416" id="14:10"></div>
-    <div class="e2_1417" id="14:20"></div>
-    <div class="e2_1418" id="14:30"></div>
-    <div class="e2_1419" id="14:40"></div>
-    <div class="e2_1420" id="14:50"></div>
-  </div>
-  <div class=e2_1421> <!--15시-->
-    <div class="e2_1422" id="15:00"></div>
-    <div class="e2_1423" id="15:10"></div>
-    <div class="e2_1424" id="15:20"></div>
-    <div class="e2_1425" id="15:30"></div>
-    <div class="e2_1426" id="15:40"></div>
-    <div class="e2_1427" id="15:50"></div>
-  </div>
-  <div class=e2_1428> <!--16시-->
-    <div class="e2_1429" id="16:00"></div>
-    <div class="e2_1430" id="16:10"></div>
-    <div class="e2_1431" id="16:20"></div>
-    <div class="e2_1432" id="16:30"></div>
-    <div class="e2_1433" id="16:40"></div>
-    <div class="e2_1434" id="16:50"></div>
-  </div>
-  <div class=e2_1435> <!--17시-->
-    <div class="e2_1436" id="17:00"></div>
-    <div class="e2_1437" id="17:10"></div>
-    <div class="e2_1438" id="17:20"></div>
-    <div class="e2_1439" id="17:30"></div>
-    <div class="e2_1440" id="17:40"></div>
-    <div class="e2_1441" id="17:50"></div>
-  </div>
-  <div class=e2_1442> <!--18시-->
-    <div class="e2_1443" id="18:00"></div>
-    <div class="e2_1444" id="18:10"></div>
-    <div class="e2_1445" id="18:20"></div>
-    <div class="e2_1446" id="18:30"></div>
-    <div class="e2_1447" id="18:40"></div>
-    <div class="e2_1448" id="18:50"></div>
-  </div>
-  <div class=e2_1449> <!--19시-->
-    <div class="e2_1450" id="19:00"></div>
-    <div class="e2_1451" id="19:10"></div>
-    <div class="e2_1452" id="19:20"></div>
-    <div class="e2_1453" id="19:30"></div>
-    <div class="e2_1454" id="19:40"></div>
-    <div class="e2_1455" id="19:50"></div>
-  </div>
-  <div class=e2_1456> <!--20시-->
-    <div class="e2_1457" id="20:00"></div>
-    <div class="e2_1458" id="20:10"></div>
-    <div class="e2_1459" id="20:20"></div>
-    <div class="e2_1460" id="20:30"></div>
-    <div class="e2_1461" id="20:40"></div>
-    <div class="e2_1462" id="20:50"></div>
-  </div>
-  <div class=e2_1463> <!--21시-->
-    <div class="e2_1464" id="21:00"></div>
-    <div class="e2_1465" id="21:10"></div>
-    <div class="e2_1466" id="21:20"></div>
-    <div class="e2_1467" id="21:30"></div>
-    <div class="e2_1468" id="21:40"></div>
-    <div class="e2_1469" id="21:50"></div>
-  </div>
-</div>
-    
-    
 
-
-       
-
-
-    
+    <div class="timeBlock">
+      <div class=e2_1363> <!--7시-->
+        <div class="e2_1364" id="7:00"></div>
+        <div class="e2_1365" id="7:10"></div>
+        <div class="e2_1366" id="7:20"></div>
+        <div class="e2_1367" id="7:30"></div>
+        <div class="e2_1368" id="7:40"></div>
+        <div class="e2_1369" id="7:50"></div>
+      </div>
+      <div class=e2_1370> <!--8시-->
+        <div class="e2_1371" id="8:00"></div>
+        <div class="e2_1372" id="8:10"></div>
+        <div class="e2_1373" id="8:20"></div>
+        <div class="e2_1374" id="8:30"></div>
+        <div class="e2_1375" id="8:40"></div>
+        <div class="e2_1376" id="8:50"></div>
+      </div>
+      <div class=e2_1377> <!--9시-->
+        <div class="e2_1378" id="9:00"></div>
+        <div class="e2_1379" id="9:10"></div>
+        <div class="e2_1380" id="9:20"></div>
+        <div class="e2_1381" id="9:30"></div>
+        <div class="e2_1382" id="9:40"></div>
+        <div class="e2_1383" id="9:50"></div>
+      </div>
+      <div class=e2_1385> <!--10시-->
+        <div class="e2_1386" id="10:00"></div>
+        <div class="e2_1387" id="10:10"></div>
+        <div class="e2_1388" id="10:20"></div>
+        <div class="e2_1389" id="10:30"></div>
+        <div class="e2_1390" id="10:40"></div>
+        <div class="e2_1391" id="10:50"></div>
+      </div>
+      <div class=e2_1393> <!--11시-->
+        <div class="e2_1394" id="11:00"></div>
+        <div class="e2_1395" id="11:10"></div>
+        <div class="e2_1396" id="11:20"></div>
+        <div class="e2_1397" id="11:30"></div>
+        <div class="e2_1398" id="11:40"></div>
+        <div class="e2_1399" id="11:50"></div>
+      </div>
+      <div class=e2_1400> <!--12시-->
+        <div class="e2_1401" id="12:00"></div>
+        <div class="e2_1402" id="12:10"></div>
+        <div class="e2_1403" id="12:20"></div>
+        <div class="e2_1404" id="12:30"></div>
+        <div class="e2_1405" id="12:40"></div>
+        <div class="e2_1406" id="12:50"></div>
+      </div>
+      <div class=e2_1407> <!--13시-->
+        <div class="e2_1408" id="13:00"></div>
+        <div class="e2_1409" id="13:10"></div>
+        <div class="e2_1410" id="13:20"></div>
+        <div class="e2_1411" id="13:30"></div>
+        <div class="e2_1412" id="13:40"></div>
+        <div class="e2_1413" id="13:50"></div>
+      </div>
+      <div class=e2_1414> <!--14시-->
+        <div class="e2_1415" id="14:00"></div>
+        <div class="e2_1416" id="14:10"></div>
+        <div class="e2_1417" id="14:20"></div>
+        <div class="e2_1418" id="14:30"></div>
+        <div class="e2_1419" id="14:40"></div>
+        <div class="e2_1420" id="14:50"></div>
+      </div>
+      <div class=e2_1421> <!--15시-->
+        <div class="e2_1422" id="15:00"></div>
+        <div class="e2_1423" id="15:10"></div>
+        <div class="e2_1424" id="15:20"></div>
+        <div class="e2_1425" id="15:30"></div>
+        <div class="e2_1426" id="15:40"></div>
+        <div class="e2_1427" id="15:50"></div>
+      </div>
+      <div class=e2_1428> <!--16시-->
+        <div class="e2_1429" id="16:00"></div>
+        <div class="e2_1430" id="16:10"></div>
+        <div class="e2_1431" id="16:20"></div>
+        <div class="e2_1432" id="16:30"></div>
+        <div class="e2_1433" id="16:40"></div>
+        <div class="e2_1434" id="16:50"></div>
+      </div>
+      <div class=e2_1435> <!--17시-->
+        <div class="e2_1436" id="17:00"></div>
+        <div class="e2_1437" id="17:10"></div>
+        <div class="e2_1438" id="17:20"></div>
+        <div class="e2_1439" id="17:30"></div>
+        <div class="e2_1440" id="17:40"></div>
+        <div class="e2_1441" id="17:50"></div>
+      </div>
+      <div class=e2_1442> <!--18시-->
+        <div class="e2_1443" id="18:00"></div>
+        <div class="e2_1444" id="18:10"></div>
+        <div class="e2_1445" id="18:20"></div>
+        <div class="e2_1446" id="18:30"></div>
+        <div class="e2_1447" id="18:40"></div>
+        <div class="e2_1448" id="18:50"></div>
+      </div>
+      <div class=e2_1449> <!--19시-->
+        <div class="e2_1450" id="19:00"></div>
+        <div class="e2_1451" id="19:10"></div>
+        <div class="e2_1452" id="19:20"></div>
+        <div class="e2_1453" id="19:30"></div>
+        <div class="e2_1454" id="19:40"></div>
+        <div class="e2_1455" id="19:50"></div>
+      </div>
+      <div class=e2_1456> <!--20시-->
+        <div class="e2_1457" id="20:00"></div>
+        <div class="e2_1458" id="20:10"></div>
+        <div class="e2_1459" id="20:20"></div>
+        <div class="e2_1460" id="20:30"></div>
+        <div class="e2_1461" id="20:40"></div>
+        <div class="e2_1462" id="20:50"></div>
+      </div>
+      <div class=e2_1463> <!--21시-->
+        <div class="e2_1464" id="21:00"></div>
+        <div class="e2_1465" id="21:10"></div>
+        <div class="e2_1466" id="21:20"></div>
+        <div class="e2_1467" id="21:30"></div>
+        <div class="e2_1468" id="21:40"></div>
+        <div class="e2_1469" id="21:50"></div>
+      </div>
+    </div>
 
     <div class="restart-alt-black-24-dp-1">
   </div>
@@ -2798,7 +2796,7 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
         var scheduleList = document.getElementById("scheduleList");
         var listItem = document.createElement("li");
 
-        // 파싱 및 변수 저장
+        // Parse and store variables
         var schedule = parseTasks(inputText)[0];
         var name = schedule.name;
         var duration = schedule.duration;
@@ -2807,12 +2805,11 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
         var startTime = formatTime(schedule.startTime);
         var endTime = formatTime(schedule.endTime);
 
-        listItem.textContent = `name: ${name}, duration: ${duration}, fixed: ${fixed}, priority: ${priority}, time: ${startTime} - ${endTime}`;
+        listItem.textContent = `Name: ${name}, Duration: ${duration}, Fixed: ${fixed}, Priority: ${priority}, Time: ${startTime} - ${endTime}`;
         scheduleList.appendChild(listItem);
       }
 
       function parseTasks(inputText) {
-        // Assuming inputText is a string containing multiple tasks, separated by a line break
         var tasks = inputText.split('\n');
         return tasks.map(taskText => {
           var task = {};
@@ -2845,32 +2842,37 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
       function submitSchedule() {
         var scheduleInput = document.getElementById("scheduleInput").value;
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/daily", true);
+        xhr.open("POST", "/DailyWork", true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4) {
             if(xhr.status === 200) {
-              window.location.href = "/DailyWork"; // redirects to the DailyWork page
+              var tasks = parseTasks(scheduleInput);
+              var url = "/DailyWork?tasks=" + encodeURIComponent(JSON.stringify(tasks));
+              window.location.href = url;
             } else {
-              // handle error
               console.log("Error, status code: " + xhr.status);
             }
           }
         };
 
-        var data = JSON.stringify({tasks: parseTasks(scheduleInput)});
-        console.log(data); //data 확인용
+        var data = JSON.stringify({ tasks: parseTasks(scheduleInput) });
         xhr.send(data);
       }
+
       function formatTime(time) {
         var parts = time.split(':');
         var hour = parseInt(parts[0]);
         var minute = parseInt(parts[1]);
-        return new Date().setHours(hour, minute);
+
+        if (isNaN(hour) || hour < 0 || hour > 23 || isNaN(minute) || minute < 0 || minute > 59) {
+          throw new Error('Invalid time format: ' + time);
+        }
+
+        return `${hour}:${minute.toString().padStart(2, '0')}`;
       }
 
-      ///////////////////////////////////color change
       function updateDOMWithTasks(tasks) {
         tasks.forEach(task => {
           var startTime = task.startTime;
@@ -2879,7 +2881,6 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
           var startID = formatTimeToID(startTime);
           var endID = formatTimeToID(endTime);
 
-          // Assuming each 10 minutes is a separate time block
           var currentID = startID;
           while (currentID <= endID) {
             var timeBlock = document.getElementById(currentID);
@@ -2887,7 +2888,11 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
               timeBlock.classList.add("assigned");
             }
 
-            // Update currentID to next 10-minute interval
+            var parentContainer = timeBlock.parentNode;
+            if (parentContainer) {
+              parentContainer.classList.add("assigned");
+            }
+
             var parts = currentID.split(":");
             var hour = parseInt(parts[0]);
             var minute = parseInt(parts[1]);
@@ -2898,39 +2903,57 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
               minute = 0;
             }
 
-            currentID = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+            currentID = `${hour}:${minute.toString().padStart(2, "0")}`;
           }
         });
       }
 
       function formatTimeToID(time) {
-        // Convert time format "HH:MM" to ID format "HH:MM"
-        return time.replace(/\s/g, "");
+        var parts = time.split(':');
+        var hour = parseInt(parts[0]);
+        var minute = parseInt(parts[1]);
+
+        if (isNaN(hour) || hour < 0 || hour > 23 || isNaN(minute) || minute < 0 || minute > 59) {
+          throw new Error('Invalid time format: ' + time);
+        }
+
+        return `${hour}:${minute.toString().padStart(2, '0')}`;
       }
 
-      // When your page is loaded and you have your tasks data available:
       document.addEventListener("DOMContentLoaded", function() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/getTasks", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
+        const urlParams = new URLSearchParams(window.location.search);
+        const tasksParam = urlParams.get('tasks');
 
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              var tasks = JSON.parse(xhr.responseText);
-              updateDOMWithTasks(tasks);
-            } else {
-              // handle error
-              console.log("Error, status code: " + xhr.status);
-            }
+        if (tasksParam) {
+          try {
+            const tasks = JSON.parse(decodeURIComponent(tasksParam));
+            updateDOMWithTasks(tasks);
+          } catch (error) {
+            console.log("Error parsing tasks from URL: ", error);
           }
-        };
+        } else {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "/getTasks", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
 
-        xhr.send();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                var tasks = JSON.parse(xhr.responseText);
+                updateDOMWithTasks(tasks);
+              } else {
+                console.log("Error, status code: " + xhr.status);
+              }
+            }
+          };
+
+          xhr.send();
+        }
       });
-
-
     </script>
+
+
+
 
 
 </body>
