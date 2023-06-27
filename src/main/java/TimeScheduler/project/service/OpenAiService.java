@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import TimeScheduler.project.controller.Task;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,106 +30,125 @@ public class OpenAiService {
                 .build();
     }
 
+    public List<String> fetchUpdatedSchedule(List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
+        List<String> assignedTasks = new ArrayList<>();
 
-    public void fetchUpdatedSchedule(List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
-            JSONArray messagesArray = new JSONArray();
+        JSONArray messagesArray = new JSONArray();
 
-            // Add system message for meal and sleep time constraints
-            JSONObject systemMessage1 = new JSONObject();
-            systemMessage1.put("role", "system");
-            systemMessage1.put("content", "You are a helpful assistant.");
-            messagesArray.put(systemMessage1);
+        // Add system message for meal and sleep time constraints
+        JSONObject systemMessage1 = new JSONObject();
+        systemMessage1.put("role", "system");
+        systemMessage1.put("content", "You are a helpful assistant.");
+        messagesArray.put(systemMessage1);
 
-            JSONObject systemMessage2 = new JSONObject();
-            systemMessage2.put("role", "system");
-            systemMessage2.put("content", "You should consider people's meal and sleep time when scheduling.");
-            messagesArray.put(systemMessage2);
+        JSONObject systemMessage2 = new JSONObject();
+        systemMessage2.put("role", "system");
+        systemMessage2.put("content", "You should consider people's meal and sleep time when scheduling.");
+        messagesArray.put(systemMessage2);
 
-            // Add user message for meal times
-            JSONObject mealTimeMessage = new JSONObject();
-            mealTimeMessage.put("role", "user");
-            mealTimeMessage.put("content", "Meal times are from 12:00pm - 1:00pm and 7:00pm - 8:00pm.");
-            messagesArray.put(mealTimeMessage);
+        // Add user message for meal times
+        JSONObject mealTimeMessage = new JSONObject();
+        mealTimeMessage.put("role", "user");
+        mealTimeMessage.put("content", "Meal times are from 12:00pm - 1:00pm and 7:00pm - 8:00pm.");
+        messagesArray.put(mealTimeMessage);
 
-            // Add user message for fixed tasks
-            for (Task task : fixedTasks) {
-                JSONObject userMessage = new JSONObject();
-                userMessage.put("role", "user");
-                userMessage.put("content", "Schedule a fixed task: " + task.getName() + ", Time: " + task.getTime());
-                messagesArray.put(userMessage);
-            }
-
-            // Add rest period
+        // Add user message for fixed tasks
+        for (Task task : fixedTasks) {
             JSONObject userMessage = new JSONObject();
             userMessage.put("role", "user");
-            userMessage.put("content", "Schedule a rest period: 30 minutes");
+            String time = task.getStartTime() + " - " + task.getEndTime();
+            userMessage.put("content", "Schedule a fixed task: " + task.getName() + ", Time: " + time);
             messagesArray.put(userMessage);
-
-            // Add user messages for flexible tasks
-            for (Task task : flexibleTasks) {
-                JSONObject userMessageFlex = new JSONObject();
-                userMessageFlex.put("role", "user");
-                userMessageFlex.put("content", "Schedule a flexible task: " + task.getName() +
-                        ", Duration: " + task.getDuration() +
-                        ", Priority: " + task.getPriority());
-                messagesArray.put(userMessageFlex);
-            }
-
-            JSONObject userMessageFormat = new JSONObject();
-            userMessageFormat.put("role", "user");
-            userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'.");
-            messagesArray.put(userMessageFormat);
-
-            JSONObject requestBody = new JSONObject();
-            requestBody.put("model", "gpt-3.5-turbo");
-            requestBody.put("messages", messagesArray);
-
-            RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
-
-            Request request = new Request.Builder()
-                    .url(OPENAI_URL)
-                    .addHeader("Authorization", "Bearer " + apiKey)
-                    .post(body)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
-                    JSONObject responseJson = new JSONObject(responseBody);
-
-                    JSONArray choicesArray = responseJson.getJSONArray("choices");
-
-                    for (int i = 0; i < choicesArray.length(); i++) {
-                        JSONObject choiceObject = choicesArray.getJSONObject(i);
-                        String completion = choiceObject.getString("message");
-                        String assignedTask = getAssignedTask(completion, flexibleTasks);
-
-                        if (assignedTask != null) {
-                            System.out.println(assignedTask);
-                        }
-                    }
-                } else {
-                    System.out.println("Request failed. Response code: " + response.code());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
 
+        // Add rest period
+        JSONObject userMessage = new JSONObject();
+        userMessage.put("role", "user");
+        userMessage.put("content", "Schedule a rest period: 30 minutes");
+        messagesArray.put(userMessage);
+
+        // Add user messages for flexible tasks
+        for (Task task : flexibleTasks) {
+            JSONObject userMessageFlex = new JSONObject();
+            userMessageFlex.put("role", "user");
+            userMessageFlex.put("content", "Schedule a flexible task: " + task.getName() +
+                    ", Duration: " + task.getDuration() +
+                    ", Priority: " + task.getPriority());
+            messagesArray.put(userMessageFlex);
+        }
+
+        JSONObject userMessageFormat = new JSONObject();
+        userMessageFormat.put("role", "user");
+        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'.");
+        messagesArray.put(userMessageFormat);
+
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("messages", messagesArray);
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
+
+        Request request = new Request.Builder()
+                .url(OPENAI_URL)
+                .addHeader("Authorization", "Bearer " + apiKey)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JSONObject responseJson = new JSONObject(responseBody);
+
+                JSONArray choicesArray = responseJson.getJSONArray("choices");
+
+                for (int i = 0; i < choicesArray.length(); i++) {
+                    JSONObject choiceObject = choicesArray.getJSONObject(i);
+                    if (choiceObject.has("message") && !choiceObject.isNull("message")) {
+                        JSONObject messageObj = choiceObject.getJSONObject("message");
+                        String completion = messageObj.getString("content");
+                        String assignedTask = getAssignedTask(completion, flexibleTasks);
+
+                        if (assignedTask != null) {
+                            assignedTasks.add(assignedTask);
+                        }
+                    } else {
+                        System.out.println("Missing message field in the response.");
+                    }
+                }
+
+            } else {
+                System.out.println("Request failed. Response code: " + response.code());
+            }
+        }catch (SocketTimeoutException e){
+            e.printStackTrace();
+            System.out.println("socket timeout exception");
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("io exception");
+        }
+
+        return assignedTasks;
+    }
 
     private String getAssignedTask(String completion, List<Task> flexibleTasks) {
         // Use a regular expression to find matches in the format "TaskName: StartTime - EndTime".
-        Pattern pattern = Pattern.compile("(.*): (.*am|pm) - (.*am|pm)");
+        Pattern pattern = Pattern.compile("(.*?): (.*?\\d+:\\d+\\s*[ap]m) - (.*?\\d+:\\d+\\s*[ap]m)");
         Matcher matcher = pattern.matcher(completion);
 
         // If a match is found, return the match. Otherwise, return null.
         if (matcher.find()) {
-            return matcher.group();
+            String taskName = matcher.group(1).trim();
+            String startTime = matcher.group(2).trim();
+            String endTime = matcher.group(3).trim();
+
+            // Construct the assigned task in the desired format
+            return "TaskName: " + taskName + ", StartTime: " + startTime + ", EndTime: " + endTime;
         } else {
             return null;
         }
     }
-
 
 }

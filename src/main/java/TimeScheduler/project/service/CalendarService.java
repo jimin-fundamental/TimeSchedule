@@ -41,7 +41,7 @@ public class CalendarService {
         }
 
         // Sort fixedTasks by time
-        fixedTasks.sort((t1, t2) -> t1.getTime().compareTo(t2.getTime()));
+        fixedTasks.sort(Comparator.comparing(Task::getStartTime));
 
         // Use OpenAI to fetch updated daily schedule
         openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
@@ -63,7 +63,7 @@ public class CalendarService {
                 boolean assigned = false;
                 for (LocalTime time = startTime; time.isBefore(endTime) && !assigned; time = time.plusMinutes(task.getDuration())) {
                     if (isTimeAvailable(time, task.getDuration(), scheduledTasks)) {
-                        assignTask(schedule, task, time);
+                        assignTask(schedule, task, startTime, endTime);
                         assigned = true;
                     }
                 }
@@ -81,11 +81,13 @@ public class CalendarService {
             System.out.println("Name: " + task.getName() +
                     ", Duration: " + task.getDuration() +
                     ", Fixed: " + task.isFixed() +
-                    ", Time: " + task.getTime());
+                    ", StartTime: " + task.getStartTime() +
+                    ", EndTime: " + task.getEndTime());
         }
 
         return schedule;
     }
+
 
     private void assignFixedTask(Schedule schedule, Task task) {
         List<Task> tasks = schedule.getTasks();
@@ -93,9 +95,10 @@ public class CalendarService {
         schedule.setTasks(tasks);
     }
 
-    private void assignTask(Schedule schedule, Task task, LocalTime time) {
+    private void assignTask(Schedule schedule, Task task, LocalTime startTime, LocalTime endTime) {
         List<Task> tasks = schedule.getTasks();
-        task.setTime(time.toString());
+        task.setStartTime(startTime);
+        task.setEndTime(endTime);
         tasks.add(task);
         schedule.setTasks(tasks);
     }
@@ -103,8 +106,8 @@ public class CalendarService {
     private boolean isTimeAvailable(LocalTime startTime, int duration, List<Task> tasks) {
         LocalTime endTime = startTime.plusMinutes(duration);
         for (Task task : tasks) {
-            if (task.getTime() != null) {
-                LocalTime taskStartTime = LocalTime.parse(task.getTime());
+            if (task.getStartTime() != null) {
+                LocalTime taskStartTime = task.getStartTime();
                 LocalTime taskEndTime = taskStartTime.plusMinutes(task.getDuration());
                 if (endTime.isAfter(taskStartTime) && startTime.isBefore(taskEndTime)) {
                     return false; // Time slot is not available
@@ -113,4 +116,5 @@ public class CalendarService {
         }
         return true; // Time slot is available
     }
+
 }
