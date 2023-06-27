@@ -52,21 +52,14 @@ public class CalendarService {
 
         // Generate schedule for flexible tasks
         if (!flexibleTasks.isEmpty()) {
-            LocalTime startTime = LocalTime.of(7, 0); // Start time for the schedule
-            LocalTime endTime = LocalTime.of(22, 0); // End time for the schedule
-
             flexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
-            List<Task> scheduledTasks = schedule.getTasks();
             for (Task task : flexibleTasks) {
-                boolean assigned = false;
-                for (LocalTime time = startTime; time.isBefore(endTime) && !assigned; time = time.plusMinutes(task.getDuration())) {
-                    if (isTimeAvailable(time, task.getDuration(), scheduledTasks)) {
-                        assignTask(schedule, task, time, fixedTasks, flexibleTasks);
-                        assigned = true;
-                    }
-                }
+                assignTask(schedule, task, fixedTasks, flexibleTasks);
             }
+
+            List<Task> scheduledTasks = schedule.getTasks();
+
         }
 
         // Save the schedule
@@ -93,9 +86,10 @@ public class CalendarService {
         schedule.setTasks(tasks);
     }
 
-    private void assignTask(Schedule schedule, Task task, LocalTime startTime, List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
+    private void assignTask(Schedule schedule, Task task, List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
         // Use OpenAI to fetch updated daily schedule
         List<String> assignedTasks = openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
+        //assignedTasks array가 return
 
         // Check if the task is among the assigned tasks
         String taskName = "TaskName: " + task.getName();
@@ -117,14 +111,12 @@ public class CalendarService {
                 List<Task> tasks = schedule.getTasks();
                 tasks.add(task);
                 schedule.setTasks(tasks);
-
-                return;
             }
         }
 
         // If the task was not assigned, assign it with the original start time
-        task.setStartTime(startTime);
-        task.setEndTime(startTime.plusMinutes(task.getDuration()));
+//        task.setStartTime(startTime);
+//        task.setEndTime(startTime.plusMinutes(task.getDuration()));
 
         // Add the task to the schedule
         List<Task> tasks = schedule.getTasks();
