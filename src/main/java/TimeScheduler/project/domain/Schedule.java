@@ -3,9 +3,7 @@ package TimeScheduler.project.domain;
 import TimeScheduler.project.controller.Task;
 import jakarta.persistence.*;
 
-import java.util.List;
-
-import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,11 +12,9 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
-
     @ElementCollection
     @CollectionTable(name = "schedule_tasks")
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>(); // Initialize the tasks list
 
     public List<Task> getTasks() {
         return tasks;
@@ -35,17 +31,4 @@ public class Schedule {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }
-
-
-
-
-
