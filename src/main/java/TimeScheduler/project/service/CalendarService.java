@@ -51,6 +51,8 @@ public class CalendarService {
         }
 
         // Generate schedule for flexible tasks
+        List<Task> scheduledTasks = null;
+
         if (!flexibleTasks.isEmpty()) {
             flexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
@@ -58,15 +60,18 @@ public class CalendarService {
                 assignTask(schedule, task, fixedTasks, flexibleTasks);
             }
 
-            List<Task> scheduledTasks = schedule.getTasks();
+            scheduledTasks = schedule.getTasks();
 
         }
 
-        // Save the schedule
-        memberRepository.save(schedule);
 
         // Print schedule to console
-        System.out.println(schedule);
+        System.out.println("schedule print합니다~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println(schedule.toString());
+        System.out.println("scheduledTasks print합니다~~~~~~~~~~~~~~~~~~");
+        for (Task s : scheduledTasks) {
+            System.out.println(s.toString());
+        }
 
         // Print schedule tasks to console
         for (Task task : schedule.getTasks()) {
@@ -76,6 +81,10 @@ public class CalendarService {
                     ", StartTime: " + task.getStartTime() +
                     ", EndTime: " + task.getEndTime());
         }
+
+
+        // Save the schedule
+        memberRepository.save(schedule);
 
         return schedule;
     }

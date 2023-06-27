@@ -85,6 +85,13 @@ public class OpenAiService {
         requestBody.put("model", "gpt-3.5-turbo");
         requestBody.put("messages", messagesArray);
 
+        System.out.println("message array 출력합니다!");
+        //messagesArray console에 print
+        for(Object m: messagesArray){
+            System.out.println(m);
+//            System.out.println(m.toString());
+        }
+
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
 
         Request request = new Request.Builder()
@@ -98,7 +105,18 @@ public class OpenAiService {
                 String responseBody = response.body().string();
                 JSONObject responseJson = new JSONObject(responseBody);
 
+                //responsebody 출력
+                System.out.println("responsebody 출력합니다.");
+                System.out.println(responseBody);//전체 메시지
+                System.out.println("responsejson 출력합니다.");
+                System.out.println(responseJson);//전체 메세지를 한줄로, 여기서 "content": ~가 유의미
+                System.out.println( );
+
                 JSONArray choicesArray = responseJson.getJSONArray("choices");
+                System.out.println("choicesArray 출력합니다");
+                for(Object m: choicesArray)
+                    System.out.println(m);
+                System.out.println();
 
                 for (int i = 0; i < choicesArray.length(); i++) {
                     JSONObject choiceObject = choicesArray.getJSONObject(i);
@@ -130,6 +148,7 @@ public class OpenAiService {
     }
 
     private String getAssignedTask(String completion, List<Task> flexibleTasks) {
+        //!!!!!!!!!!flexibleTasks 사용해야지!!!!!!
         // Use a regular expression to find matches in the format "TaskName: StartTime - EndTime".
         Pattern pattern = Pattern.compile("(.*?): (.*?\\d+:\\d+\\s*[ap]m) - (.*?\\d+:\\d+\\s*[ap]m)");
         Matcher matcher = pattern.matcher(completion);
