@@ -2790,8 +2790,25 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
       <button onclick="submitSchedule()">일정 저장</button>
     </div>
 
+    <div id="tasks"></div>
+
     <script>
-      function addSchedule() {
+      fetch('/tasks')
+              .then(response => response.json())
+              .then(tasks => {
+                const tasksContainer = document.getElementById('tasks');
+                tasks.forEach(task => {
+                  const taskElement = document.createElement('div');
+                  taskElement.innerHTML =
+                          'Name: ' + task.name +
+                          ', Fixed: ' + task.fixed +
+                          ', StartTime: ' + task.startTime +
+                          ', EndTime: ' + task.endTime;
+                  tasksContainer.appendChild(taskElement);
+                });
+              });
+
+    function addSchedule() {
         var inputText = document.getElementById("scheduleInput").value;
         var scheduleList = document.getElementById("scheduleList");
         var listItem = document.createElement("li");
@@ -2950,7 +2967,10 @@ name: 냐옹, duration: 200, fixed: false, priority: 2
           xhr.send();
         }
       });
+
+
     </script>
+
 
 
 

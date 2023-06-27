@@ -1,5 +1,6 @@
 package TimeScheduler.project;
 
+import TimeScheduler.project.domain.Schedule;
 import TimeScheduler.project.repository.ScheduleRepository;
 import TimeScheduler.project.repository.JpaScheduleRepository;
 import TimeScheduler.project.service.CalendarService;
@@ -32,5 +33,10 @@ public class SpringConfig {
     @Bean
     public OpenAiService openAiService() {
         return new OpenAiService();
+    }
+
+    @Bean
+    public Schedule schedule() {
+        return new Schedule();
     }
 }
