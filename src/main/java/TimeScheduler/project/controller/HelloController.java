@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HelloController {
     @GetMapping("/")
     public String index(){
-        return "firstpage";
+        return "하루일정페이지";
     }
 }

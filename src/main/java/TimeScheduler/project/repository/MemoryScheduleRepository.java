@@ -1,19 +1,27 @@
 package TimeScheduler.project.repository;
 
 import TimeScheduler.project.domain.Schedule;
+import TimeScheduler.project.domain.Task;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class MemoryMemberRepository implements MemberRepository{
-    private static Map<Long, Schedule> store = new HashMap<>(); //key = id, value = Member
-
-    private static long sequence = 0L; //0,1,2.. 자동으로 key값을 생성해주는 애
-
+public class MemoryScheduleRepository implements ScheduleRepository{
+    private static Map<Long, Schedule> store = new HashMap<>();
+    private static long sequence = 0L;
 
     @Override
     public Schedule save(Schedule schedule) {
         schedule.setId(++sequence);
         store.put(schedule.getId(), schedule);
         return schedule;
+    }
+
+    @Override
+    public List<Task> findAllTasks() {
+        return store.values().stream()
+                .flatMap(schedule -> schedule.getTasks().stream())
+                .collect(Collectors.toList());
     }
 }
 
