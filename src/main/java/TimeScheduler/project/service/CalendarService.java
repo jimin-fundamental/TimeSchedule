@@ -51,6 +51,8 @@ public class CalendarService {
         }
 
         // Generate schedule for flexible tasks
+        List<Task> scheduledTasks = null;
+
         if (!flexibleTasks.isEmpty()) {
             flexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
@@ -58,15 +60,10 @@ public class CalendarService {
                 assignTask(schedule, task, fixedTasks, flexibleTasks);
             }
 
-            List<Task> scheduledTasks = schedule.getTasks();
+            scheduledTasks = schedule.getTasks();
 
         }
 
-        // Save the schedule
-        memberRepository.save(schedule);
-
-        // Print schedule to console
-        System.out.println(schedule);
 
         // Print schedule tasks to console
         for (Task task : schedule.getTasks()) {
@@ -77,6 +74,10 @@ public class CalendarService {
                     ", EndTime: " + task.getEndTime());
         }
 
+
+        // Save the schedule
+        memberRepository.save(schedule);
+
         return schedule;
     }
 
@@ -86,43 +87,63 @@ public class CalendarService {
         schedule.setTasks(tasks);
     }
 
+    //new 버전
     private void assignTask(Schedule schedule, Task task, List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
         // Use OpenAI to fetch updated daily schedule
         List<String> assignedTasks = openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
+        System.out.println("CalenderService의 assignTask함수입니다.");
+        //여기까지 작동됨.
+
         //assignedTasks array가 return
 
-        // Check if the task is among the assigned tasks
-        String taskName = "TaskName: " + task.getName();
-        for (String assignedTask : assignedTasks) {
-            if (assignedTask.startsWith(taskName)) {
-                // Extract the start and end time from the assigned task
-                String startTimeStr = extractStartTime(assignedTask);
-                String endTimeStr = extractEndTime(assignedTask);
-
-                // Parse the start and end time strings to LocalTime
-                LocalTime assignedStartTime = LocalTime.parse(startTimeStr);
-                LocalTime assignedEndTime = LocalTime.parse(endTimeStr);
-
-                // Update the task with the assigned start and end time
-                task.setStartTime(assignedStartTime);
-                task.setEndTime(assignedEndTime);
-
-                // Add the task to the schedule
-                List<Task> tasks = schedule.getTasks();
-                tasks.add(task);
-                schedule.setTasks(tasks);
-            }
-        }
-
-        // If the task was not assigned, assign it with the original start time
-//        task.setStartTime(startTime);
-//        task.setEndTime(startTime.plusMinutes(task.getDuration()));
 
         // Add the task to the schedule
         List<Task> tasks = schedule.getTasks();
         tasks.add(task);
         schedule.setTasks(tasks);
     }
+
+    //이전 버전
+//    private void assignTask(Schedule schedule, Task task, List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
+//        // Use OpenAI to fetch updated daily schedule
+//        List<String> assignedTasks = openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
+//        System.out.println("CalenderService의 assignTask함수입니다.");
+//        //여기까지 작동됨.
+//
+//        //assignedTasks array가 return
+//
+//        // Check if the task is among the assigned tasks
+//        String taskName = "TaskName: " + task.getName();
+//        for (String assignedTask : assignedTasks) {
+//            if (assignedTask.startsWith(taskName)) {
+//                // Extract the start and end time from the assigned task
+//                String startTimeStr = extractStartTime(assignedTask);
+//                String endTimeStr = extractEndTime(assignedTask);
+//
+//                // Parse the start and end time strings to LocalTime
+//                LocalTime assignedStartTime = LocalTime.parse(startTimeStr);
+//                LocalTime assignedEndTime = LocalTime.parse(endTimeStr);
+//
+//                // Update the task with the assigned start and end time
+//                task.setStartTime(assignedStartTime);
+//                task.setEndTime(assignedEndTime);
+//
+//                // Add the task to the schedule
+//                List<Task> tasks = schedule.getTasks();
+//                tasks.add(task);
+//                schedule.setTasks(tasks);
+//            }
+//        }
+//
+//        // If the task was not assigned, assign it with the original start time
+////        task.setStartTime(startTime);
+////        task.setEndTime(startTime.plusMinutes(task.getDuration()));
+//
+//        // Add the task to the schedule
+//        List<Task> tasks = schedule.getTasks();
+//        tasks.add(task);
+//        schedule.setTasks(tasks);
+//    }
 
     private String extractStartTime(String assignedTask) {
         // Use a regular expression to extract the start time from the assigned task string

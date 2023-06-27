@@ -8,6 +8,7 @@ import TimeScheduler.project.domain.Task;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,11 +34,13 @@ public class OpenAiService {
         List<String> assignedTasks = new ArrayList<>();
 
         JSONArray messagesArray = new JSONArray();
+        int numOfFlex = flexibleTasks.size();
+        System.out.println(numOfFlex);
 
         // Add system message for meal and sleep time constraints
         JSONObject systemMessage1 = new JSONObject();
         systemMessage1.put("role", "system");
-        systemMessage1.put("content", "You are a helpful assistant.");
+        systemMessage1.put("content", "You are a helpful assistant. You have to schedule the member's time.");
         messagesArray.put(systemMessage1);
 
         JSONObject systemMessage2 = new JSONObject();
@@ -78,12 +81,19 @@ public class OpenAiService {
 
         JSONObject userMessageFormat = new JSONObject();
         userMessageFormat.put("role", "user");
-        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'. And you can assign only in time 7:00 - 22:00.");
+        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'. You can assign only in time 7:00 - 22:00 and say only 'TaskName: StartTime - EndTime', nothing more and only for tasks which have fixed = false.");
         messagesArray.put(userMessageFormat);
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", "gpt-3.5-turbo");
         requestBody.put("messages", messagesArray);
+
+        System.out.println("message array 출력합니다!");
+        //messagesArray console에 print
+        for(Object m: messagesArray){
+            System.out.println(m);
+//            System.out.println(m.toString());
+        }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), requestBody.toString());
 
@@ -98,17 +108,38 @@ public class OpenAiService {
                 String responseBody = response.body().string();
                 JSONObject responseJson = new JSONObject(responseBody);
 
+                //responsebody 출력
+                System.out.println("responsebody 출력합니다.");
+                System.out.println(responseBody);//전체 메시지
+                System.out.println("responsejson 출력합니다.");
+                System.out.println(responseJson);//전체 메세지를 한줄로, 여기서 "content": ~가 유의미
+                System.out.println( );
+
                 JSONArray choicesArray = responseJson.getJSONArray("choices");
+                System.out.println("choicesArray 출력합니다");
+                for(Object m: choicesArray)
+                    System.out.println(m);
+                System.out.println();
 
                 for (int i = 0; i < choicesArray.length(); i++) {
                     JSONObject choiceObject = choicesArray.getJSONObject(i);
                     if (choiceObject.has("message") && !choiceObject.isNull("message")) {
                         JSONObject messageObj = choiceObject.getJSONObject("message");
                         String completion = messageObj.getString("content");
-                        String assignedTask = getAssignedTask(completion, flexibleTasks);
 
-                        if (assignedTask != null) {
-                            assignedTasks.add(assignedTask);
+                        System.out.println("numofFlex:"+numOfFlex);
+                        assignedTasks = getAssignedTask(completion, numOfFlex);
+
+                        System.out.println("AsssignedTask print합니다!");
+                        for (String s: assignedTasks){
+                            System.out.println(s);
+                        }
+                        System.out.println();
+
+                        if (assignedTasks != null) {
+                            System.out.println("이제 CalenderService로 return할게요~!");
+                            System.out.println("_--------------------------------------------------_");
+                            return assignedTasks;
                         }
                     } else {
                         System.out.println("Missing message field in the response.");
@@ -129,21 +160,26 @@ public class OpenAiService {
         return assignedTasks;
     }
 
-    private String getAssignedTask(String completion, List<Task> flexibleTasks) {
-        // Use a regular expression to find matches in the format "TaskName: StartTime - EndTime".
-        Pattern pattern = Pattern.compile("(.*?): (.*?\\d+:\\d+\\s*[ap]m) - (.*?\\d+:\\d+\\s*[ap]m)");
+    private List<String> getAssignedTask(String completion, int numofFlex) {
+        List<String> assignedTasks = new ArrayList<>();
+        Pattern pattern = Pattern.compile("(.*?): (.*?\\d+:\\d+\\s*) - (.*?\\d+:\\d+\\s*)");
         Matcher matcher = pattern.matcher(completion);
 
-        // If a match is found, return the match. Otherwise, return null.
-        if (matcher.find()) {
+        while (numofFlex > 0 && matcher.find()) {  // Use matcher.find() to find a match
             String taskName = matcher.group(1).trim();
             String startTime = matcher.group(2).trim();
             String endTime = matcher.group(3).trim();
 
-            // Construct the assigned task in the desired format
-            return "TaskName: " + taskName + ", StartTime: " + startTime + ", EndTime: " + endTime;
-        } else {
-            return null;
+            String assignedTask = "TaskName: " + taskName + ", StartTime: " + startTime + ", EndTime: " + endTime;
+            System.out.println("This assignedTask is: " + assignedTask);
+            assignedTasks.add(assignedTask);
+            numofFlex--;
         }
+
+        return assignedTasks;
     }
+
+
+
+
 }
