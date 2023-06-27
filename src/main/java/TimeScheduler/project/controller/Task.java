@@ -2,6 +2,8 @@ package TimeScheduler.project.controller;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
+
 @Entity
 public class Task {
     @Id
@@ -11,7 +13,8 @@ public class Task {
     private String name;
     private int duration;
     private boolean fixed;
-    private String time;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private int priority;
 
     // Constructors, getters, and setters
@@ -32,16 +35,16 @@ public class Task {
         this.priority = priority;
     }
 
-    public Task(Long id, String date, String name, int duration, boolean fixed, String time, int priority) {
+    public Task(Long id, String date, String name, int duration, boolean fixed, LocalTime startTime, LocalTime endTime, int priority) {
         this.id = id;
         this.date = date;
         this.name = name;
         this.duration = duration;
         this.fixed = fixed;
-        this.time = time;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.priority = priority;
     }
-
     // Getters and setters
 
     public Long getId() {
@@ -84,12 +87,20 @@ public class Task {
         this.fixed = fixed;
     }
 
-    public String getTime() {
-        return time;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public int getPriority() {
