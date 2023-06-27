@@ -2801,47 +2801,54 @@
         scheduleList.appendChild(listItem);
       }
 
-      function parseSchedule(inputText) {
-        var schedule = {};
-        var regex = /([^:,]+):\s*([^,]+)/g;
-        var matches;
+      function parseTasks(inputText) {
+        // Assuming inputText is a string containing multiple tasks, separated by a comma and a space
+        var tasks = inputText.split('", "');
+        return tasks.map(taskText => {
+          var task = {};
+          var regex = /([^:,]+):\s*([^,]+)/g;
+          var matches;
 
-        while ((matches = regex.exec(inputText)) !== null) {
-          var key = matches[1].trim().toLowerCase();
-          var value = matches[2].trim();
+          while ((matches = regex.exec(taskText)) !== null) {
+            var key = matches[1].trim().toLowerCase();
+            var value = matches[2].trim();
 
-          if (key === "name")
-            schedule.name = value;
-          else if (key === "duration")
-            schedule.duration = parseInt(value);
-          else if (key === "fixed")
-            schedule.fixed = (value.toLowerCase() === "true");
-          else if (key === "priority")
-            schedule.priority = parseInt(value);
-          else if (key === "time")
-            schedule.time = value;
-        }
+            if (key === "name")
+              task.name = value;
+            else if (key === "duration")
+              task.duration = parseInt(value);
+            else if (key === "fixed")
+              task.fixed = (value.toLowerCase() === "true");
+            else if (key === "priority")
+              task.priority = parseInt(value);
+            else if (key === "time") {
+              var times = value.split(' - ');
+              task.startTime = times[0];
+              task.endTime = times[1];
+            }
+          }
 
-        return schedule;
+          return task;
+        });
       }
+
 
       function submitSchedule() {
         var scheduleInput = document.getElementById("scheduleInput").value;
-
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/daily", true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4 && xhr.status === 200) {
-            // Redirect or handle the response as needed
             console.log("Schedule submitted successfully");
           }
         };
 
-        var data = JSON.stringify(parseSchedule(scheduleInput));
+        var data = JSON.stringify({tasks: parseTasks(scheduleInput)});
         xhr.send(data);
       }
+
     </script>
 
 
