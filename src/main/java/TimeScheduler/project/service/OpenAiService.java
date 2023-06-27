@@ -81,7 +81,7 @@ public class OpenAiService {
 
         JSONObject userMessageFormat = new JSONObject();
         userMessageFormat.put("role", "user");
-        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'. You can assign only in time 7:00 - 22:00 and say only 'TaskName: StartTime - EndTime', nothing more and only for tasks which have fixed = false.");
+        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime\n'. You can assign all the flexible tasks only in time 7:00 - 22:00 (endtime also should be ended before 22:00) and say only 'TaskName: StartTime - EndTime', nothing more and only for tasks which have fixed = false.");
         messagesArray.put(userMessageFormat);
 
         JSONObject requestBody = new JSONObject();
@@ -162,10 +162,10 @@ public class OpenAiService {
 
     private List<String> getAssignedTask(String completion, int numofFlex) {
         List<String> assignedTasks = new ArrayList<>();
-        Pattern pattern = Pattern.compile("(.*?): (.*?\\d+:\\d+\\s*) - (.*?\\d+:\\d+\\s*)");
+        Pattern pattern = Pattern.compile("(.*?): (\\d+:\\d+\\s*) - (\\d+:\\d+\\s*)");
         Matcher matcher = pattern.matcher(completion);
 
-        while (numofFlex > 0 && matcher.find()) {  // Use matcher.find() to find a match
+        while (numofFlex > 0 && matcher.find()) {
             String taskName = matcher.group(1).trim();
             String startTime = matcher.group(2).trim();
             String endTime = matcher.group(3).trim();
@@ -178,6 +178,7 @@ public class OpenAiService {
 
         return assignedTasks;
     }
+
 
 
 
