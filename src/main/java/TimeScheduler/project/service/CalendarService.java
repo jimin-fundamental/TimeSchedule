@@ -2,7 +2,7 @@ package TimeScheduler.project.service;
 
 import TimeScheduler.project.domain.Task;
 import TimeScheduler.project.domain.Schedule;
-import TimeScheduler.project.repository.MemberRepository;
+import TimeScheduler.project.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 @Transactional
 public class CalendarService {
 
-    private final MemberRepository memberRepository;
+    private final ScheduleRepository memberRepository;
 
     private final OpenAiService openAi;
 
     @Autowired
-    public CalendarService(MemberRepository memberRepository, OpenAiService openAi) {
-        this.memberRepository = memberRepository;
+    public CalendarService(ScheduleRepository scheduleRepository, OpenAiService openAi) {
+        this.memberRepository = scheduleRepository;
         this.openAi = openAi;
     }
 

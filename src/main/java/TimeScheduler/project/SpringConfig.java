@@ -1,31 +1,32 @@
 package TimeScheduler.project;
 
-import TimeScheduler.project.repository.MemberRepository;
+import TimeScheduler.project.repository.ScheduleRepository;
+import TimeScheduler.project.repository.JpaScheduleRepository;
 import TimeScheduler.project.service.CalendarService;
-//import TimeScheduler.project.service.MemberService;
 import TimeScheduler.project.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Configuration
+@EnableTransactionManagement
 public class SpringConfig {
 
-    private final MemberRepository memberRepository;
+    @PersistenceContext
+    private EntityManager em;
 
-    @Autowired
-    public SpringConfig(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    @Bean
+    public ScheduleRepository scheduleRepository() {
+        return new JpaScheduleRepository(em);
     }
-
-//    @Bean
-//    public MemberService memberService() {
-//        return new MemberService(memberRepository);
-//    }
 
     @Bean
     public CalendarService calendarService(OpenAiService openAiService) {
-        return new CalendarService(memberRepository, openAiService);
+        return new CalendarService(scheduleRepository(), openAiService);
     }
 
     @Bean
@@ -33,4 +34,3 @@ public class SpringConfig {
         return new OpenAiService();
     }
 }
-

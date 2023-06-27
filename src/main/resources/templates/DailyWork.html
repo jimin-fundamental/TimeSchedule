@@ -6,6 +6,10 @@
     <title>AI가일정짜줌</title>
     
     <style>
+      .assigned {
+        background-color: #ffa500; /* Or any color you prefer */
+      }
+
       .schedule-container {
         display: flex;
         flex-direction: column;
@@ -2778,7 +2782,12 @@
 </div>
     <div class="schedule-container">
       <button onclick="addSchedule()">스케줄 추가</button>
-      <textarea id="scheduleInput" placeholder="예시) name: 사진인쇄, duration: 90, fixed: true, priority: 1, time: 8:00am - 9:30am"></textarea>
+      <textarea id="scheduleInput" placeholder="예시) name: 사진인쇄, duration: 90, fixed: true, time: 8:00 - 9:30
+name: 수업1, duration: 100, fixed: true, time: 20:00 - 21:40
+name: 놀기, duration: 90, fixed: false, priority: 1
+name: 냐옹, duration: 200, fixed: false, priority: 2
+
+"></textarea>
       <ul id="scheduleList"></ul>
       <button onclick="submitSchedule()">일정 저장</button>
     </div>
@@ -2860,6 +2869,66 @@
         var minute = parseInt(parts[1]);
         return new Date().setHours(hour, minute);
       }
+
+      ///////////////////////////////////color change
+      function updateDOMWithTasks(tasks) {
+        tasks.forEach(task => {
+          var startTime = task.startTime;
+          var endTime = task.endTime;
+
+          var startID = formatTimeToID(startTime);
+          var endID = formatTimeToID(endTime);
+
+          // Assuming each 10 minutes is a separate time block
+          var currentID = startID;
+          while (currentID <= endID) {
+            var timeBlock = document.getElementById(currentID);
+            if (timeBlock) {
+              timeBlock.classList.add("assigned");
+            }
+
+            // Update currentID to next 10-minute interval
+            var parts = currentID.split(":");
+            var hour = parseInt(parts[0]);
+            var minute = parseInt(parts[1]);
+
+            minute += 10;
+            if (minute >= 60) {
+              hour += 1;
+              minute = 0;
+            }
+
+            currentID = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+          }
+        });
+      }
+
+      function formatTimeToID(time) {
+        // Convert time format "HH:MM" to ID format "HH:MM"
+        return time.replace(/\s/g, "");
+      }
+
+      // When your page is loaded and you have your tasks data available:
+      document.addEventListener("DOMContentLoaded", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/getTasks", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              var tasks = JSON.parse(xhr.responseText);
+              updateDOMWithTasks(tasks);
+            } else {
+              // handle error
+              console.log("Error, status code: " + xhr.status);
+            }
+          }
+        };
+
+        xhr.send();
+      });
+
 
     </script>
 
