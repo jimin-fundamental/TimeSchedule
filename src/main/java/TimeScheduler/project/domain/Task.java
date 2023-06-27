@@ -1,15 +1,16 @@
-package TimeScheduler.project.controller;
+package TimeScheduler.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
-
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String date = "27";
     private String name;
     private int duration;
     private boolean fixed;
@@ -17,27 +18,18 @@ public class Task {
     private LocalTime endTime;
     private int priority;
 
-    // Constructors, getters, and setters
-
     public Task() {
     }
 
-    public Task(String date) {
-        this.date = date;
-    }
-
-    public Task(Long id, String date, String name, int duration, boolean fixed, int priority) {
-        this.id = id;
-        this.date = date;
+    public Task(String name, int duration, boolean fixed, int priority) {
         this.name = name;
         this.duration = duration;
         this.fixed = fixed;
         this.priority = priority;
     }
 
-    public Task(Long id, String date, String name, int duration, boolean fixed, LocalTime startTime, LocalTime endTime, int priority) {
+    public Task(Long id, String name, int duration, boolean fixed, LocalTime startTime, LocalTime endTime, int priority) {
         this.id = id;
-        this.date = date;
         this.name = name;
         this.duration = duration;
         this.fixed = fixed;
@@ -45,7 +37,28 @@ public class Task {
         this.endTime = endTime;
         this.priority = priority;
     }
-    // Getters and setters
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @JsonSetter
+    public void setStartTime(String startTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+        this.startTime = LocalTime.parse(startTime, formatter);
+    }
+
+    @JsonSetter
+    public void setEndTime(String endTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+        this.endTime = LocalTime.parse(endTime, formatter);
+    }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -53,14 +66,6 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getName() {
@@ -91,16 +96,8 @@ public class Task {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
     public LocalTime getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
     }
 
     public int getPriority() {

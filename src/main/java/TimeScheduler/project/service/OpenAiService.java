@@ -3,18 +3,16 @@ package TimeScheduler.project.service;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.transaction.annotation.Transactional;
-import TimeScheduler.project.controller.Task;
+import TimeScheduler.project.domain.Task;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Transactional
 public class OpenAiService {
     private static final String OPENAI_URL = "https://api.openai.com/v1/chat/completions";
     private static final String API_KEY = "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";
@@ -26,7 +24,7 @@ public class OpenAiService {
         this.apiKey = API_KEY;
         // Create OkHttpClient with a timeout of 300 seconds
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(Duration.ofSeconds(300))
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
 

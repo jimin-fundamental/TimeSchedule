@@ -1,6 +1,6 @@
 package TimeScheduler.project.service;
 
-import TimeScheduler.project.controller.Task;
+import TimeScheduler.project.domain.Task;
 import TimeScheduler.project.domain.Schedule;
 import TimeScheduler.project.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
