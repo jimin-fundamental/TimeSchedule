@@ -1,11 +1,19 @@
 package TimeScheduler.project.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jdk.jfr.Enabled;
+
+@Entity
 public class Member {
     //고객이 입력
     private String email;
     private String pw;
     
     //시스템이 부여
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public String getEmail() {

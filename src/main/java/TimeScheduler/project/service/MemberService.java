@@ -3,12 +3,13 @@ package TimeScheduler.project.service;
 import TimeScheduler.project.domain.Member;
 import TimeScheduler.project.repository.MemberRepository;
 import TimeScheduler.project.repository.MemoryMemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.List;
 
-@Service
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -23,6 +24,22 @@ public class MemberService {
         memberRepository.save(member);
         return member.getId();
     }
+
+    public Optional<Member> login(Member member) {
+        // 이메일과 비밀번호를 통해 회원을 조회합니다.
+        Optional<Member> optionalMember = memberRepository.findByEmail(member.getEmail());
+
+        // 조회된 회원이 존재하고, 비밀번호가 일치하는 경우에만 로그인 성공으로 간주합니다.
+        if (optionalMember.isPresent()) {
+            Member foundMember = optionalMember.get();
+            if (foundMember.getPw().equals(member.getPw())) {
+                return Optional.of(foundMember); // 로그인 성공
+            }
+        }
+
+        return Optional.empty(); // 로그인 실패
+    }
+
 
     private void validateDuplicateMember(Member member) {
         memberRepository.findByEmail(member.getEmail())
@@ -48,5 +65,9 @@ public class MemberService {
     public Optional<Member> findOne(Long memberId){
         return memberRepository.findById(memberId);
     }
+
+
+
+
 }
 
