@@ -1,32 +1,21 @@
 package TimeScheduler.project.domain;
 
-import TimeScheduler.project.controller.Task;
 import jakarta.persistence.*;
 
-import java.util.List;
-
-import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Schedule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>(); // Initialize the tasks list
 
-    @ElementCollection
-    @CollectionTable(name = "schedule_tasks")
-    private List<Task> tasks;
-
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -36,16 +25,14 @@ public class Schedule {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
+
+
+    // ...
 }
-
-
-
-
-

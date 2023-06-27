@@ -1,8 +1,10 @@
 package TimeScheduler.project.service;
 
-import TimeScheduler.project.controller.Task;
+import TimeScheduler.project.domain.Task;
 import TimeScheduler.project.domain.Schedule;
-import jakarta.transaction.Transactional;
+import TimeScheduler.project.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -10,11 +12,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Transactional
 public class CalendarService {
 
-    private OpenAiService openAi;
+    private final MemberRepository memberRepository;
 
-    public CalendarService(OpenAiService openAi) {
+    private final OpenAiService openAi;
+
+    @Autowired
+    public CalendarService(MemberRepository memberRepository, OpenAiService openAi) {
+        this.memberRepository = memberRepository;
         this.openAi = openAi;
     }
 
@@ -34,42 +41,53 @@ public class CalendarService {
         }
 
         // Sort fixedTasks by time
-        fixedTasks.sort((t1, t2) -> t1.getTime().compareTo(t2.getTime()));
+        fixedTasks.sort(Comparator.comparing(Task::getStartTime));
 
-        // Create schedule date
-//        String scheduleDate = determineScheduleDate(); // 날짜 받아오기
-        schedule.setDate("25");
+        // Use OpenAI to fetch updated daily schedule
+        openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
 
         // Generate schedule for fixed tasks
         for (Task task : fixedTasks) {
             assignFixedTask(schedule, task);
         }
 
-        // Use OpenAPI to fetch updated daily schedule
-        openAi.fetchUpdatedSchedule(flexibleTasks);
-        List<Task> updatedFlexibleTasks = new ArrayList<>(flexibleTasks);
-
         // Generate schedule for flexible tasks
-        if (!updatedFlexibleTasks.isEmpty()) {
+        if (!flexibleTasks.isEmpty()) {
             LocalTime startTime = LocalTime.of(7, 0); // Start time for the schedule
             LocalTime endTime = LocalTime.of(22, 0); // End time for the schedule
 
-            updatedFlexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
+            flexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
             List<Task> scheduledTasks = schedule.getTasks();
-            for (Task task : updatedFlexibleTasks) {
+            for (Task task : flexibleTasks) {
                 boolean assigned = false;
                 for (LocalTime time = startTime; time.isBefore(endTime) && !assigned; time = time.plusMinutes(task.getDuration())) {
                     if (isTimeAvailable(time, task.getDuration(), scheduledTasks)) {
-                        assignTask(schedule, task, time);
+                        assignTask(schedule, task, startTime, endTime);
                         assigned = true;
                     }
                 }
             }
         }
 
+        // Save the schedule
+        memberRepository.save(schedule);
+
+        // Print schedule to console
+        System.out.println(schedule);
+
+        // Print schedule tasks to console
+        for (Task task : schedule.getTasks()) {
+            System.out.println("Name: " + task.getName() +
+                    ", Duration: " + task.getDuration() +
+                    ", Fixed: " + task.isFixed() +
+                    ", StartTime: " + task.getStartTime() +
+                    ", EndTime: " + task.getEndTime());
+        }
+
         return schedule;
     }
+
 
     private void assignFixedTask(Schedule schedule, Task task) {
         List<Task> tasks = schedule.getTasks();
@@ -77,9 +95,10 @@ public class CalendarService {
         schedule.setTasks(tasks);
     }
 
-    private void assignTask(Schedule schedule, Task task, LocalTime time) {
+    private void assignTask(Schedule schedule, Task task, LocalTime startTime, LocalTime endTime) {
         List<Task> tasks = schedule.getTasks();
-        task.setTime(time.toString());
+        task.setStartTime(startTime);
+        task.setEndTime(endTime);
         tasks.add(task);
         schedule.setTasks(tasks);
     }
@@ -87,8 +106,8 @@ public class CalendarService {
     private boolean isTimeAvailable(LocalTime startTime, int duration, List<Task> tasks) {
         LocalTime endTime = startTime.plusMinutes(duration);
         for (Task task : tasks) {
-            if (task.getTime() != null) {
-                LocalTime taskStartTime = LocalTime.parse(task.getTime());
+            if (task.getStartTime() != null) {
+                LocalTime taskStartTime = task.getStartTime();
                 LocalTime taskEndTime = taskStartTime.plusMinutes(task.getDuration());
                 if (endTime.isAfter(taskStartTime) && startTime.isBefore(taskEndTime)) {
                     return false; // Time slot is not available
