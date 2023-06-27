@@ -2778,8 +2778,9 @@
 </div>
     <div class="schedule-container">
       <button onclick="addSchedule()">스케줄 추가</button>
-      <textarea id="scheduleInput" placeholder="예시: date: 27, name: 사진인쇄, duration: 1h30m, fixed: true, prioity: 1, time: 8:00am - 9:30am"></textarea>
+      <textarea id="scheduleInput" placeholder="예시) name: 사진인쇄, duration: 90, fixed: true, priority: 1, time: 8:00am - 9:30am"></textarea>
       <ul id="scheduleList"></ul>
+      <button onclick="submitSchedule()">일정 저장</button>
     </div>
 
     <script>
@@ -2790,14 +2791,13 @@
 
         // 파싱 및 변수 저장
         var schedule = parseSchedule(inputText);
-        var date = schedule.date;
         var name = schedule.name;
         var duration = schedule.duration;
         var fixed = schedule.fixed;
-        var priority = schedule.fixed;
+        var priority = schedule.priority;
         var time = schedule.time;
 
-        listItem.textContent = `Date: ${date}, Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Priority: ${priority}, Time: ${time}`;
+        listItem.textContent = `Name: ${name}, Duration: ${duration} minutes, Fixed: ${fixed}, Priority: ${priority}, Time: ${time}`;
         scheduleList.appendChild(listItem);
       }
 
@@ -2810,9 +2810,7 @@
           var key = matches[1].trim().toLowerCase();
           var value = matches[2].trim();
 
-          if (key === "date")
-            schedule.date = value;
-          else if (key === "name")
+          if (key === "name")
             schedule.name = value;
           else if (key === "duration")
             schedule.duration = parseInt(value);
@@ -2826,6 +2824,26 @@
 
         return schedule;
       }
+
+      function submitSchedule() {
+        var scheduleInput = document.getElementById("scheduleInput").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/daily", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // Redirect or handle the response as needed
+            console.log("Schedule submitted successfully");
+          }
+        };
+
+        var data = JSON.stringify(parseSchedule(scheduleInput));
+        xhr.send(data);
+      }
     </script>
+
+
 </body>
 </html>

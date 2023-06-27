@@ -2,7 +2,9 @@ package TimeScheduler.project.service;
 
 import TimeScheduler.project.controller.Task;
 import TimeScheduler.project.domain.Schedule;
-import jakarta.transaction.Transactional;
+import TimeScheduler.project.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -10,11 +12,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Transactional
 public class CalendarService {
 
-    private OpenAiService openAi;
+    private final MemberRepository memberRepository;
 
-    public CalendarService(OpenAiService openAi) {
+    private final OpenAiService openAi;
+
+    @Autowired
+    public CalendarService(MemberRepository memberRepository, OpenAiService openAi) {
+        this.memberRepository = memberRepository;
         this.openAi = openAi;
     }
 
@@ -36,28 +43,23 @@ public class CalendarService {
         // Sort fixedTasks by time
         fixedTasks.sort((t1, t2) -> t1.getTime().compareTo(t2.getTime()));
 
-        // Create schedule date
-//        String scheduleDate = determineScheduleDate(); // 날짜 받아오기
-        schedule.setDate("25");
+        // Use OpenAI to fetch updated daily schedule
+        openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
 
         // Generate schedule for fixed tasks
         for (Task task : fixedTasks) {
             assignFixedTask(schedule, task);
         }
 
-        // Use OpenAPI to fetch updated daily schedule
-        openAi.fetchUpdatedSchedule(flexibleTasks);
-        List<Task> updatedFlexibleTasks = new ArrayList<>(flexibleTasks);
-
         // Generate schedule for flexible tasks
-        if (!updatedFlexibleTasks.isEmpty()) {
+        if (!flexibleTasks.isEmpty()) {
             LocalTime startTime = LocalTime.of(7, 0); // Start time for the schedule
             LocalTime endTime = LocalTime.of(22, 0); // End time for the schedule
 
-            updatedFlexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
+            flexibleTasks.sort(Comparator.comparingInt(Task::getPriority)); // Sort flexible tasks by priority
 
             List<Task> scheduledTasks = schedule.getTasks();
-            for (Task task : updatedFlexibleTasks) {
+            for (Task task : flexibleTasks) {
                 boolean assigned = false;
                 for (LocalTime time = startTime; time.isBefore(endTime) && !assigned; time = time.plusMinutes(task.getDuration())) {
                     if (isTimeAvailable(time, task.getDuration(), scheduledTasks)) {
@@ -66,6 +68,20 @@ public class CalendarService {
                     }
                 }
             }
+        }
+
+        // Save the schedule
+        memberRepository.save(schedule);
+
+        // Print schedule to console
+        System.out.println(schedule);
+
+        // Print schedule tasks to console
+        for (Task task : schedule.getTasks()) {
+            System.out.println("Name: " + task.getName() +
+                    ", Duration: " + task.getDuration() +
+                    ", Fixed: " + task.isFixed() +
+                    ", Time: " + task.getTime());
         }
 
         return schedule;
@@ -97,5 +113,4 @@ public class CalendarService {
         }
         return true; // Time slot is available
     }
-
 }

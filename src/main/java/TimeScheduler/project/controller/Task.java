@@ -7,7 +7,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String date;
+    private String date = "27";
     private String name;
     private int duration;
     private boolean fixed;
