@@ -7,6 +7,7 @@ import TimeScheduler.project.domain.Task;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,7 +60,6 @@ public class OpenAiService {
             messagesArray.put(userMessage);
         }
 
-
         // Add rest period
         JSONObject userMessage = new JSONObject();
         userMessage.put("role", "user");
@@ -78,7 +78,7 @@ public class OpenAiService {
 
         JSONObject userMessageFormat = new JSONObject();
         userMessageFormat.put("role", "user");
-        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'.");
+        userMessageFormat.put("content", "Provide the scheduled times for each flexible task in the format 'TaskName: StartTime - EndTime'. And you can assign only in time 7:00 - 22:00.");
         messagesArray.put(userMessageFormat);
 
         JSONObject requestBody = new JSONObject();
@@ -118,14 +118,12 @@ public class OpenAiService {
             } else {
                 System.out.println("Request failed. Response code: " + response.code());
             }
-        }catch (SocketTimeoutException e){
+        } catch (SocketTimeoutException e) {
             e.printStackTrace();
-            System.out.println("socket timeout exception");
-
-        }
-        catch (IOException e) {
+            System.out.println("Socket timeout exception");
+        } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("io exception");
+            System.out.println("IO exception");
         }
 
         return assignedTasks;
@@ -148,5 +146,4 @@ public class OpenAiService {
             return null;
         }
     }
-
 }

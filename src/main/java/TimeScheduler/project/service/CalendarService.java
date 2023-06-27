@@ -11,6 +11,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Transactional
 public class CalendarService {
@@ -43,9 +45,6 @@ public class CalendarService {
         // Sort fixedTasks by time
         fixedTasks.sort(Comparator.comparing(Task::getStartTime));
 
-        // Use OpenAI to fetch updated daily schedule
-        openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
-
         // Generate schedule for fixed tasks
         for (Task task : fixedTasks) {
             assignFixedTask(schedule, task);
@@ -63,7 +62,7 @@ public class CalendarService {
                 boolean assigned = false;
                 for (LocalTime time = startTime; time.isBefore(endTime) && !assigned; time = time.plusMinutes(task.getDuration())) {
                     if (isTimeAvailable(time, task.getDuration(), scheduledTasks)) {
-                        assignTask(schedule, task, startTime, endTime);
+                        assignTask(schedule, task, time, fixedTasks, flexibleTasks);
                         assigned = true;
                     }
                 }
@@ -88,19 +87,75 @@ public class CalendarService {
         return schedule;
     }
 
-
     private void assignFixedTask(Schedule schedule, Task task) {
         List<Task> tasks = schedule.getTasks();
         tasks.add(task);
         schedule.setTasks(tasks);
     }
 
-    private void assignTask(Schedule schedule, Task task, LocalTime startTime, LocalTime endTime) {
-        List<Task> tasks = schedule.getTasks();
+    private void assignTask(Schedule schedule, Task task, LocalTime startTime, List<Task> fixedTasks, List<Task> flexibleTasks) throws IOException {
+        // Use OpenAI to fetch updated daily schedule
+        List<String> assignedTasks = openAi.fetchUpdatedSchedule(fixedTasks, flexibleTasks);
+
+        // Check if the task is among the assigned tasks
+        String taskName = "TaskName: " + task.getName();
+        for (String assignedTask : assignedTasks) {
+            if (assignedTask.startsWith(taskName)) {
+                // Extract the start and end time from the assigned task
+                String startTimeStr = extractStartTime(assignedTask);
+                String endTimeStr = extractEndTime(assignedTask);
+
+                // Parse the start and end time strings to LocalTime
+                LocalTime assignedStartTime = LocalTime.parse(startTimeStr);
+                LocalTime assignedEndTime = LocalTime.parse(endTimeStr);
+
+                // Update the task with the assigned start and end time
+                task.setStartTime(assignedStartTime);
+                task.setEndTime(assignedEndTime);
+
+                // Add the task to the schedule
+                List<Task> tasks = schedule.getTasks();
+                tasks.add(task);
+                schedule.setTasks(tasks);
+
+                return;
+            }
+        }
+
+        // If the task was not assigned, assign it with the original start time
         task.setStartTime(startTime);
-        task.setEndTime(endTime);
+        task.setEndTime(startTime.plusMinutes(task.getDuration()));
+
+        // Add the task to the schedule
+        List<Task> tasks = schedule.getTasks();
         tasks.add(task);
         schedule.setTasks(tasks);
+    }
+
+    private String extractStartTime(String assignedTask) {
+        // Use a regular expression to extract the start time from the assigned task string
+        Pattern pattern = Pattern.compile("StartTime: (.*?\\d+:\\d+\\s*[ap]m)");
+        Matcher matcher = pattern.matcher(assignedTask);
+
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        } else {
+            // Return a default value or handle the case when start time extraction fails
+            return null;
+        }
+    }
+
+    private String extractEndTime(String assignedTask) {
+        // Use a regular expression to extract the end time from the assigned task string
+        Pattern pattern = Pattern.compile("EndTime: (.*?\\d+:\\d+\\s*[ap]m)");
+        Matcher matcher = pattern.matcher(assignedTask);
+
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        } else {
+            // Return a default value or handle the case when end time extraction fails
+            return null;
+        }
     }
 
     private boolean isTimeAvailable(LocalTime startTime, int duration, List<Task> tasks) {
@@ -116,5 +171,4 @@ public class CalendarService {
         }
         return true; // Time slot is available
     }
-
 }
